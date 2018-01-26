@@ -1,13 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      20/Jan/2018  23:49:39
+// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      25/Jan/2018  20:31:59
 // Copyright 1999-2017 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
 //    Endian       =  little
 //    Source file  =  F:\K60_CAR_2018\lib\peripheral\motor.c
 //    Command line =  
-//        -f C:\Users\19071_~1\AppData\Local\Temp\EW535C.tmp
+//        -f C:\Users\19071_~1\AppData\Local\Temp\EW284B.tmp
 //        (F:\K60_CAR_2018\lib\peripheral\motor.c -D LPLD_K60 -D USE_K60DZ10
 //        -lCN F:\K60_CAR_2018\project\programme\iar\RAM\List -lB
 //        F:\K60_CAR_2018\project\programme\iar\RAM\List -o
@@ -48,6 +48,7 @@
         EXTERN LPLD_LPTMR_Init
         EXTERN LPLD_PIT_DisableIrq
         EXTERN LPLD_PIT_EnableIrq
+        EXTERN LPLD_PIT_Init
         EXTERN __aeabi_memcpy4
         EXTERN memset
 
@@ -69,24 +70,31 @@ mtrctrl:
         DS8 4
 //    5 
 
+        SECTION `.bss`:DATA:REORDER:NOROOT(2)
+        DATA
+//    6 static uint32 average_num=0;
+average_num:
+        DS8 4
+//    7 
+
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//    6 void pit_motor_control(void){
+//    8 void pit_motor_control(void){
 pit_motor_control:
         PUSH     {R7,LR}
-//    7   static uint32 pit_enter_counter;
-//    8   static uint16 placc_temp_value[2];
-//    9   do{
-//   10       placc_temp_value[0] = LPLD_LPTMR_GetPulseAcc();
+//    9   static uint32 pit_enter_counter;
+//   10   static uint16 placc_temp_value[2];
+//   11   do{
+//   12       placc_temp_value[0] = LPLD_LPTMR_GetPulseAcc();
 ??pit_motor_control_0:
         BL       LPLD_LPTMR_GetPulseAcc
         LDR.N    R1,??DataTable4
         STRH     R0,[R1, #+0]
-//   11       placc_temp_value[1] = LPLD_LPTMR_GetPulseAcc();
+//   13       placc_temp_value[1] = LPLD_LPTMR_GetPulseAcc();
         BL       LPLD_LPTMR_GetPulseAcc
         LDR.N    R1,??DataTable4
         STRH     R0,[R1, #+2]
-//   12   }while(abs_diff(placc_temp_value[0], placc_temp_value[1])>1);
+//   14   }while(abs_diff(placc_temp_value[0], placc_temp_value[1])>1);
         LDR.N    R0,??DataTable4
         LDRH     R0,[R0, #+0]
         LDR.N    R1,??DataTable4
@@ -108,28 +116,29 @@ pit_motor_control:
 ??pit_motor_control_2:
         CMP      R0,#+2
         BGE.N    ??pit_motor_control_0
-//   13   
-//   14   switch(0){
-//   15     case 0:
-//   16         mtrctrl->ecdlft.value = placc_temp_value[1];
+//   15   
+//   16   //switch(0){
+//   17    // case 0:
+//   18         mtrctrl->ecdlft.value = placc_temp_value[1];
         LDR.N    R0,??DataTable4
         LDRSH    R0,[R0, #+2]
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STRH     R0,[R1, #+120]
-//   17         break;
-//   18     case 1:
-//   19         mtrctrl->ecdrgt.value  = placc_temp_value[1];
-//   20         break;
-//   21   }
-//   22   pit_enter_counter++;
-        LDR.N    R0,??DataTable4_2
-        LDR      R0,[R0, #+0]
-        ADDS     R0,R0,#+1
-        LDR.N    R1,??DataTable4_2
-        STR      R0,[R1, #+0]
-//   23 
-//   24   mtrctrl->ecdlft.mileage += mtrctrl->ecdlft.value;
+//   19    //     break;
+//   20    // case 1:
+//   21         mtrctrl->ecdrgt.value  = placc_temp_value[1];
+        LDR.N    R0,??DataTable4
+        LDRSH    R0,[R0, #+2]
+        LDR.N    R1,??DataTable4_1
+        LDR      R1,[R1, #+0]
+        STRH     R0,[R1, #+128]
+//   22    //     break;
+//   23   //}
+//   24  
+//   25   
+//   26 
+//   27   mtrctrl->ecdlft.mileage += mtrctrl->ecdlft.value;
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         LDRSH    R0,[R0, #+120]
@@ -140,7 +149,7 @@ pit_motor_control:
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STR      R0,[R1, #+124]
-//   25   mtrctrl->ecdrgt.mileage += mtrctrl->ecdrgt.value;
+//   28   mtrctrl->ecdrgt.mileage += mtrctrl->ecdrgt.value;
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         LDRSH    R0,[R0, #+128]
@@ -151,22 +160,35 @@ pit_motor_control:
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STR      R0,[R1, #+132]
-//   26   
-//   27 //单光编counter清零
-//   28   LPTMR0->CSR&=(~LPTMR_CSR_TEN_MASK); 
-        LDR.N    R0,??DataTable4_3  ;; 0x40040000
+//   29   
+//   30   average_num= mtrctrl->ecdlft.mileage;
+        LDR.N    R0,??DataTable4_1
+        LDR      R0,[R0, #+0]
+        LDR      R0,[R0, #+124]
+        LDR.N    R1,??DataTable4_2
+        STR      R0,[R1, #+0]
+//   31   pit_enter_counter++;
+        LDR.N    R0,??DataTable4_3
+        LDR      R0,[R0, #+0]
+        ADDS     R0,R0,#+1
+        LDR.N    R1,??DataTable4_3
+        STR      R0,[R1, #+0]
+//   32   
+//   33 //单光编counter清零
+//   34   LPTMR0->CSR&=(~LPTMR_CSR_TEN_MASK); 
+        LDR.N    R0,??DataTable4_4  ;; 0x40040000
         LDR      R0,[R0, #+0]
         LSRS     R0,R0,#+1
         LSLS     R0,R0,#+1
-        LDR.N    R1,??DataTable4_3  ;; 0x40040000
+        LDR.N    R1,??DataTable4_4  ;; 0x40040000
         STR      R0,[R1, #+0]
-//   29   LPTMR0->CSR |= LPTMR_CSR_TEN_MASK;  
-        LDR.N    R0,??DataTable4_3  ;; 0x40040000
+//   35   LPTMR0->CSR |= LPTMR_CSR_TEN_MASK;  
+        LDR.N    R0,??DataTable4_4  ;; 0x40040000
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x1
-        LDR.N    R1,??DataTable4_3  ;; 0x40040000
+        LDR.N    R1,??DataTable4_4  ;; 0x40040000
         STR      R0,[R1, #+0]
-//   30 }
+//   36 }
         POP      {R0,PC}          ;; return
 
         SECTION `.bss`:DATA:REORDER:NOROOT(2)
@@ -178,61 +200,61 @@ pit_motor_control:
         DATA
 `pit_motor_control::placc_temp_value`:
         DS8 4
-//   31   
+//   37   
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//   32 void motor_control__set_duty(motor_sel_t sel,int32 duty){
+//   38 void motor_control__set_duty(motor_sel_t sel,int32 duty){
 motor_control__set_duty:
         PUSH     {R3-R5,LR}
         MOVS     R2,R1
-//   33   motor_chn_t ch_0,ch_1;
-//   34   
-//   35   switch(sel){
+//   39   motor_chn_t ch_0,ch_1;
+//   40   
+//   41   switch(sel){
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         CMP      R0,#+0
         BEQ.N    ??motor_control__set_duty_0
         CMP      R0,#+1
         BEQ.N    ??motor_control__set_duty_1
         B.N      ??motor_control__set_duty_2
-//   36   case  Left_Motor:
-//   37     if(duty>=0){
+//   42   case  Left_Motor:
+//   43     if(duty>=0){
 ??motor_control__set_duty_0:
         CMP      R2,#+0
         BMI.N    ??motor_control__set_duty_3
-//   38         ch_0=Motor_LR;
+//   44         ch_0=Motor_LR;
         MOVS     R4,#+1
-//   39         ch_1=Motor_LF;
+//   45         ch_1=Motor_LF;
         MOVS     R3,#+0
         B.N      ??motor_control__set_duty_4
-//   40     }else{
-//   41         ch_0=Motor_LF;
+//   46     }else{
+//   47         ch_0=Motor_LF;
 ??motor_control__set_duty_3:
         MOVS     R4,#+0
-//   42         ch_1=Motor_LR;       
+//   48         ch_1=Motor_LR;       
         MOVS     R3,#+1
-//   43     }
-//   44     break;
-//   45   case Right_Motor:
-//   46     if(duty>=0){
-//   47         ch_0=Motor_RR;
-//   48         ch_1=Motor_RF;
-//   49     }else{
-//   50         ch_0=Motor_RF;
-//   51         ch_1=Motor_RR;       
-//   52     }
-//   53     break;
-//   54   default:return;
-//   55   }
-//   56   
-//   57   if(duty<0) duty=-duty;
+//   49     }
+//   50     break;
+//   51   case Right_Motor:
+//   52     if(duty>=0){
+//   53         ch_0=Motor_RR;
+//   54         ch_1=Motor_RF;
+//   55     }else{
+//   56         ch_0=Motor_RF;
+//   57         ch_1=Motor_RR;       
+//   58     }
+//   59     break;
+//   60   default:return;
+//   61   }
+//   62   
+//   63   if(duty<0) duty=-duty;
 ??motor_control__set_duty_4:
 ??motor_control__set_duty_5:
         CMP      R2,#+0
         BPL.N    ??motor_control__set_duty_6
         RSBS     R2,R2,#+0
-//   58   
-//   59     LPLD_FTM_PWM_ChangeDuty(mtrctrl->mtrcfg[ch_1].FTMn, mtrctrl->mtrcfg[ch_1].FTM_Chn, duty);
+//   64   
+//   65     LPLD_FTM_PWM_ChangeDuty(mtrctrl->mtrcfg[ch_1].FTMn, mtrctrl->mtrcfg[ch_1].FTM_Chn, duty);
 ??motor_control__set_duty_6:
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
@@ -249,7 +271,7 @@ motor_control__set_duty:
         ADD      R0,R5,R3
         LDR      R0,[R0, #+12]
         BL       LPLD_FTM_PWM_ChangeDuty
-//   60     LPLD_FTM_PWM_ChangeDuty(mtrctrl->mtrcfg[ch_0].FTMn, mtrctrl->mtrcfg[ch_0].FTM_Chn, 0);
+//   66     LPLD_FTM_PWM_ChangeDuty(mtrctrl->mtrcfg[ch_0].FTMn, mtrctrl->mtrcfg[ch_0].FTM_Chn, 0);
         MOVS     R2,#+0
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
@@ -266,7 +288,7 @@ motor_control__set_duty:
         ADD      R0,R3,R4
         LDR      R0,[R0, #+12]
         BL       LPLD_FTM_PWM_ChangeDuty
-//   61 }
+//   67 }
 ??motor_control__set_duty_7:
         POP      {R0,R4,R5,PC}    ;; return
 ??motor_control__set_duty_1:
@@ -282,14 +304,14 @@ motor_control__set_duty:
         B.N      ??motor_control__set_duty_5
 ??motor_control__set_duty_2:
         B.N      ??motor_control__set_duty_7
-//   62 
+//   68 
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//   63 void motor_control__enable(){
+//   69 void motor_control__enable(){
 motor_control__enable:
         PUSH     {R7,LR}
-//   64     LPLD_PIT_EnableIrq(mtrctrl->pit_init_param);
+//   70     LPLD_PIT_EnableIrq(mtrctrl->pit_init_param);
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         ADDS     R1,R0,#+60
@@ -299,16 +321,16 @@ motor_control__enable:
         BL       __aeabi_memcpy4
         POP      {R0-R3}
         BL       LPLD_PIT_EnableIrq
-//   65 }
+//   71 }
         POP      {R0,PC}          ;; return
-//   66 
+//   72 
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//   67 void motor_control__disable(){
+//   73 void motor_control__disable(){
 motor_control__disable:
         PUSH     {R7,LR}
-//   68     LPLD_PIT_DisableIrq(mtrctrl->pit_init_param);
+//   74     LPLD_PIT_DisableIrq(mtrctrl->pit_init_param);
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         ADDS     R1,R0,#+60
@@ -318,111 +340,122 @@ motor_control__disable:
         BL       __aeabi_memcpy4
         POP      {R0-R3}
         BL       LPLD_PIT_DisableIrq
-//   69 }
+//   75 }
         POP      {R0,PC}          ;; return
-//   70 
+//   76 
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//   71 void motor_control__config(motor_control_t *mtrctrl_usr){
+//   77 void motor_control__config(motor_control_t *mtrctrl_usr){
 motor_control__config:
         PUSH     {R1-R5,LR}
-//   72   mtrctrl=mtrctrl_usr;
+//   78   mtrctrl=mtrctrl_usr;
         LDR.N    R1,??DataTable4_1
         STR      R0,[R1, #+0]
-//   73   int8 i;
-//   74   //PIT
-//   75   memset(&(mtrctrl->pit_init_param),0,sizeof(PIT_InitTypeDef));
+//   79   int8 i;
+//   80   //PIT
+//   81   memset(&(mtrctrl->pit_init_param),0,sizeof(PIT_InitTypeDef));
         MOVS     R2,#+20
         MOVS     R1,#+0
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         ADDS     R0,R0,#+60
         BL       memset
-//   76   mtrctrl->pit_init_param.PIT_Pitx=mtrctrl->pit;
+//   82   mtrctrl->pit_init_param.PIT_Pitx=mtrctrl->pit;
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         LDRB     R0,[R0, #+0]
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STRB     R0,[R1, #+60]
-//   77   mtrctrl->pit_init_param.PIT_PeriodMs=mtrctrl->period_ms;
+//   83   mtrctrl->pit_init_param.PIT_PeriodMs=mtrctrl->period_ms;
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         LDR      R0,[R0, #+4]
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STR      R0,[R1, #+68]
-//   78   mtrctrl->pit_init_param.PIT_Isr=pit_motor_control;
-        LDR.N    R0,??DataTable4_4
+//   84   mtrctrl->pit_init_param.PIT_Isr=pit_motor_control;
+        LDR.N    R0,??DataTable4_5
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STR      R0,[R1, #+76]
-//   79   
-//   80   //LPTMR
-//   81   memset(&(mtrctrl->lptmr_init_param),0,sizeof(LPTMR_InitTypeDef));
+//   85   LPLD_PIT_Init(mtrctrl->pit_init_param);
+        LDR.N    R0,??DataTable4_1
+        LDR      R0,[R0, #+0]
+        ADDS     R1,R0,#+60
+        SUB      SP,SP,#+16
+        MOV      R0,SP
+        MOVS     R2,#+20
+        BL       __aeabi_memcpy4
+        POP      {R0-R3}
+        BL       LPLD_PIT_Init
+//   86   
+//   87   //LPTMR
+//   88   memset(&(mtrctrl->lptmr_init_param),0,sizeof(LPTMR_InitTypeDef));
         MOVS     R2,#+12
         MOVS     R1,#+0
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         ADDS     R0,R0,#+80
         BL       memset
-//   82   mtrctrl->lptmr_init_param.LPTMR_Mode =LPTMR_MODE_PLACC;
+//   89   mtrctrl->lptmr_init_param.LPTMR_Mode =LPTMR_MODE_PLACC;
         MOVS     R0,#+1
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STRB     R0,[R1, #+80]
-//   83   mtrctrl->lptmr_init_param.LPTMR_PluseAccInput =mtrctrl->ecd_lft.LPTMR_ALTn;
-        LDR.N    R0,??DataTable4_1
-        LDR      R0,[R0, #+0]
-        LDRB     R0,[R0, #+8]
-        LDR.N    R1,??DataTable4_1
-        LDR      R1,[R1, #+0]
-        STRB     R0,[R1, #+84]
-//   84   LPLD_LPTMR_Init(mtrctrl->lptmr_init_param);
-        LDR.N    R0,??DataTable4_1
-        LDR      R0,[R0, #+0]
-        ADDS     R0,R0,#+80
-        LDM      R0,{R0-R2}
-        BL       LPLD_LPTMR_Init
-//   85   mtrctrl->lptmr_init_param.LPTMR_PluseAccInput =mtrctrl->ecd_rgt.LPTMR_ALTn;
+//   90 
+//   91   mtrctrl->lptmr_init_param.LPTMR_PluseAccInput =mtrctrl->ecd_rgt.LPTMR_ALTn;
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         LDRB     R0,[R0, #+9]
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STRB     R0,[R1, #+84]
-//   86   LPLD_LPTMR_Init(mtrctrl->lptmr_init_param);
+//   92   LPLD_LPTMR_Init(mtrctrl->lptmr_init_param);
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         ADDS     R0,R0,#+80
         LDM      R0,{R0-R2}
         BL       LPLD_LPTMR_Init
-//   87   
-//   88   //mile
-//   89   mtrctrl->ecdlft.mileage=0;
+//   93     mtrctrl->lptmr_init_param.LPTMR_PluseAccInput =mtrctrl->ecd_lft.LPTMR_ALTn;
+        LDR.N    R0,??DataTable4_1
+        LDR      R0,[R0, #+0]
+        LDRB     R0,[R0, #+8]
+        LDR.N    R1,??DataTable4_1
+        LDR      R1,[R1, #+0]
+        STRB     R0,[R1, #+84]
+//   94   LPLD_LPTMR_Init(mtrctrl->lptmr_init_param);
+        LDR.N    R0,??DataTable4_1
+        LDR      R0,[R0, #+0]
+        ADDS     R0,R0,#+80
+        LDM      R0,{R0-R2}
+        BL       LPLD_LPTMR_Init
+//   95   
+//   96   //mile
+//   97   mtrctrl->ecdlft.mileage=0;
         MOVS     R0,#+0
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STR      R0,[R1, #+124]
-//   90   mtrctrl->ecdrgt.mileage=0;
+//   98   mtrctrl->ecdrgt.mileage=0;
         MOVS     R0,#+0
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STR      R0,[R1, #+132]
-//   91   
-//   92   //ftm
-//   93   memset(&(mtrctrl->motor_init_param),0,sizeof(FTM_InitTypeDef));
+//   99   
+//  100   //ftm
+//  101   memset(&(mtrctrl->motor_init_param),0,sizeof(FTM_InitTypeDef));
         MOVS     R2,#+28
         MOVS     R1,#+0
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         ADDS     R0,R0,#+92
         BL       memset
-//   94   for(i=0;i<Motor_LEN;i++){
+//  102   for(i=0;i<Motor_LEN;i++){
         MOVS     R4,#+0
         B.N      ??motor_control__config_0
-//   95     mtrctrl->motor_init_param.FTM_Ftmx=mtrctrl->mtrcfg[i].FTMn;
+//  103     mtrctrl->motor_init_param.FTM_Ftmx=mtrctrl->mtrcfg[i].FTMn;
 ??motor_control__config_1:
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
@@ -434,12 +467,12 @@ motor_control__config:
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STR      R0,[R1, #+92]
-//   96     mtrctrl->motor_init_param.FTM_Mode=FTM_MODE_PWM;
+//  104     mtrctrl->motor_init_param.FTM_Mode=FTM_MODE_PWM;
         MOVS     R0,#+1
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STRB     R0,[R1, #+96]
-//   97     mtrctrl->motor_init_param.FTM_PwmFreq=mtrctrl->mtrcfg[i].freq;
+//  105     mtrctrl->motor_init_param.FTM_PwmFreq=mtrctrl->mtrcfg[i].freq;
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         SXTB     R4,R4            ;; SignExt  R4,R4,#+24,#+24
@@ -450,7 +483,7 @@ motor_control__config:
         LDR.N    R1,??DataTable4_1
         LDR      R1,[R1, #+0]
         STR      R0,[R1, #+100]
-//   98     LPLD_FTM_Init(mtrctrl->motor_init_param);
+//  106     LPLD_FTM_Init(mtrctrl->motor_init_param);
         LDR.N    R0,??DataTable4_1
         LDR      R0,[R0, #+0]
         ADDS     R1,R0,#+92
@@ -460,12 +493,12 @@ motor_control__config:
         BL       __aeabi_memcpy4
         POP      {R0-R3}
         BL       LPLD_FTM_Init
-//   99     LPLD_FTM_PWM_Enable(mtrctrl->mtrcfg[i].FTMn,
-//  100                         mtrctrl->mtrcfg[i].FTM_Chn,
-//  101                         0,
-//  102                         mtrctrl->mtrcfg[i].PTXn,
-//  103                         ALIGN_LEFT
-//  104                         );
+//  107     LPLD_FTM_PWM_Enable(mtrctrl->mtrcfg[i].FTMn,
+//  108                         mtrctrl->mtrcfg[i].FTM_Chn,
+//  109                         0,
+//  110                         mtrctrl->mtrcfg[i].PTXn,
+//  111                         ALIGN_LEFT
+//  112                         );
         MOVS     R0,#+40
         STR      R0,[SP, #+0]
         LDR.N    R0,??DataTable4_1
@@ -491,13 +524,13 @@ motor_control__config:
         ADD      R0,R0,R5
         LDR      R0,[R0, #+12]
         BL       LPLD_FTM_PWM_Enable
-//  105   }
+//  113   }
         ADDS     R4,R4,#+1
 ??motor_control__config_0:
         SXTB     R4,R4            ;; SignExt  R4,R4,#+24,#+24
         CMP      R4,#+4
         BLT.N    ??motor_control__config_1
-//  106 }
+//  114 }
         POP      {R0-R2,R4,R5,PC}  ;; return
 
         SECTION `.text`:CODE:NOROOT(2)
@@ -516,18 +549,24 @@ motor_control__config:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable4_2:
-        DC32     `pit_motor_control::pit_enter_counter`
+        DC32     average_num
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable4_3:
-        DC32     0x40040000
+        DC32     `pit_motor_control::pit_enter_counter`
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable4_4:
+        DC32     0x40040000
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable4_5:
         DC32     pit_motor_control
 
         SECTION `.iar_vfe_header`:DATA:NOALLOC:NOROOT(2)
@@ -537,11 +576,11 @@ motor_control__config:
 
         END
 // 
-//  12 bytes in section .bss
-// 676 bytes in section .text
+//  16 bytes in section .bss
+// 728 bytes in section .text
 // 
-// 676 bytes of CODE memory
-//  12 bytes of DATA memory
+// 728 bytes of CODE memory
+//  16 bytes of DATA memory
 //
 //Errors: none
-//Warnings: 2
+//Warnings: 3

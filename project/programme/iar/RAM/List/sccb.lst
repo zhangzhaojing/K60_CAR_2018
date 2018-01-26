@@ -1,0 +1,455 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM       25/Jan/2018  19:57:17
+# Copyright 1999-2017 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  F:\K60_CAR_2018\lib\peripheral\sccb.c
+#    Command line =  
+#        -f C:\Users\19071_~1\AppData\Local\Temp\EW5F83.tmp
+#        (F:\K60_CAR_2018\lib\peripheral\sccb.c -D LPLD_K60 -D USE_K60DZ10 -lCN
+#        F:\K60_CAR_2018\project\programme\iar\RAM\List -lB
+#        F:\K60_CAR_2018\project\programme\iar\RAM\List -o
+#        F:\K60_CAR_2018\project\programme\iar\RAM\Obj --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling
+#        --debug --endian=little --cpu=Cortex-M4 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\INC\c\DLib_Config_Normal.h" -I
+#        F:\K60_CAR_2018\project\programme\iar\..\app\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\CPU\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\common\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\LPLD\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\LPLD\HW\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\LPLD\DEV\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\LPLD\FUNC\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\uCOS-II\Ports\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\uCOS-II\Source\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\FatFs\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\FatFs\option\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\USB\common\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\USB\driver\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\USB\descriptor\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\USB\class\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\peripheral\ -Ol -I
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\CMSIS\Include\" -D ARM_MATH_CM4)
+#    Locale       =  C
+#    List file    =  F:\K60_CAR_2018\project\programme\iar\RAM\List\sccb.lst
+#    Object file  =  F:\K60_CAR_2018\project\programme\iar\RAM\Obj\sccb.o
+#
+###############################################################################
+
+F:\K60_CAR_2018\lib\peripheral\sccb.c
+      1          /**
+      2          * @file DEV_SCCB.c
+      3          * @version 0.1[By LPLD]
+      4          * @date 2013-09-24
+      5          * @brief SCCB设备驱动程序
+      6          *
+      7          * 更改建议:可根据实际硬件修改
+      8          *
+      9          * 版权所有:北京拉普兰德电子技术有限公司
+     10          * http://www.lpld.cn
+     11          * mail:support@lpld.cn
+     12          *
+     13          * @par
+     14          * 本代码由拉普兰德[LPLD]开发并维护，并向所有使用者开放源代码。
+     15          * 开发者可以随意修使用或改源代码。但本段及以上注释应予以保留。
+     16          * 不得更改或删除原版权所有者姓名，二次开发者可以加注二次版权所有者。
+     17          * 但应在遵守此协议的基础上，开放源代码、不得出售代码本身。
+     18          * 拉普兰德不负责由于使用本代码所带来的任何事故、法律责任或相关不良影响。
+     19          * 拉普兰德无义务解释、说明本代码的具体原理、功能、实现方法。
+     20          * 除非拉普兰德[LPLD]授权，开发者不得将本代码用于商业产品。
+     21          */
+     22          #include "sccb.h"
+     23          
+     24          static camera_cfg_t * camcfg;
+     25          
+     26          //定义SCL、SDA的引脚
+     27          #define SCCB_SCL        _DO(camcfg->scl)  
+     28          #define SCCB_SDA_O      _DO(camcfg->sda) 
+     29          #define SCCB_SDA_I      _DI(camcfg->sda) 
+     30          //定义SDA输入输出
+     31          #define SCCB_SDA_OUT()  _DDR(camcfg->sda)=1
+     32          #define SCCB_SDA_IN()   _DDR(camcfg->sda)=0
+     33          
+     34          static uint8 LPLD_SCCB_Start(void);
+     35          static void LPLD_SCCB_Stop(void);
+     36          static void LPLD_SCCB_Ack(void);
+     37          static void LPLD_SCCB_NoAck(void);
+     38          static uint8 LPLD_SCCB_WaitAck(void);
+     39          static void LPLD_SCCB_SendByte(uint8);
+     40          static uint8 LPLD_SCCB_ReceiveByte(void);
+     41          static void LPLD_SCCB_Delay(uint16);
+     42          
+     43          //#include "ov7725.h"
+     44          //
+     45          //static const ov7725_reg_t landzo_reg_tbl[] =
+     46          //{
+     47          //    {OV7725_COM4         , 0x81},
+     48          //    {OV7725_CLKRC        , 0x01},
+     49          //    {OV7725_COM2         , 0x03},
+     50          //    {OV7725_COM3         , 0xD0},
+     51          //    {OV7725_COM7         , 0x40},
+     52          //    {OV7725_HSTART       , 0x3F},
+     53          //    {OV7725_HSIZE        , 0x58},
+     54          //    {OV7725_HOutSize     , 0x58},
+     55          //    {OV7725_VSTRT        , 0x03},
+     56          //    {OV7725_VSIZE        , 0x78},
+     57          //    {OV7725_HREF         , 0x00},
+     58          //    {OV7725_SCAL0        , 0x0A},
+     59          //    {OV7725_AWB_Ctrl0    , 0xE0},
+     60          //    {OV7725_DSPAuto      , 0xff},
+     61          //    {OV7725_DSP_Ctrl2    , 0x0C},
+     62          //    {OV7725_DSP_Ctrl3    , 0x00},
+     63          //    {OV7725_DSP_Ctrl4    , 0x00},
+     64          //    {OV7725_EXHCH        , 0x00},
+     65          //    {OV7725_GAM1         , 0x0c},
+     66          //    {OV7725_GAM2         , 0x16},
+     67          //    {OV7725_GAM3         , 0x2a},
+     68          //    {OV7725_GAM4         , 0x4e},
+     69          //    {OV7725_GAM5         , 0x61},
+     70          //    {OV7725_GAM6         , 0x6f},
+     71          //    {OV7725_GAM7         , 0x7b},
+     72          //    {OV7725_GAM8         , 0x86},
+     73          //    {OV7725_GAM9         , 0x8e},
+     74          //    {OV7725_GAM10        , 0x97},
+     75          //    {OV7725_GAM11        , 0xa4},
+     76          //    {OV7725_GAM12        , 0xaf},
+     77          //    {OV7725_GAM13        , 0xc5},
+     78          //    {OV7725_GAM14        , 0xd7},
+     79          //    {OV7725_GAM15        , 0xe8},
+     80          //    {OV7725_SLOP         , 0x20},
+     81          //    {OV7725_LC_RADI      , 0x00},
+     82          //    {OV7725_LC_COEF      , 0x13},
+     83          //    {OV7725_LC_XC        , 0x08},
+     84          //    {OV7725_LC_COEFB     , 0x14},
+     85          //    {OV7725_LC_COEFR     , 0x17},
+     86          //    {OV7725_LC_CTR       , 0x05},
+     87          //    {OV7725_BDBase       , 0x99},
+     88          //    {OV7725_BDMStep      , 0x03},
+     89          //    {OV7725_SDE          , 0x04},
+     90          //    {OV7725_BRIGHT       , 0x00},
+     91          //    {OV7725_CNST         , 70},
+     92          //    {OV7725_SIGN         , 0x06},
+     93          //    {OV7725_UVADJ0       , 0x11},
+     94          //    {OV7725_UVADJ1       , 0x02},
+     95          //    {OV7725_COM10        , 0x20}
+     96          //};
+     97          
+     98          /*
+     99           * LPLD_SCCB_Init
+    100           * 初始化SCCB所需引脚
+    101           */
+    102          void LPLD_SCCB_Init(camera_cfg_t * camcfg_usr)
+    103          {
+    104            GPIO_InitTypeDef gpio_sccb_init;
+    105            uint8_t lsbid=0x00;
+    106            uint16_t regi, reglen = sizeof(landzo_reg_tbl)/sizeof(landzo_reg_tbl[0]);
+    107            
+    108            camcfg = camcfg_usr;
+    109           
+    110            gpio_sccb_init.GPIO_Dir = DIR_OUTPUT;
+    111            gpio_sccb_init.GPIO_Output = OUTPUT_H;
+    112            gpio_sccb_init.GPIO_PinControl = NULL;
+    113            
+    114            gpio_sccb_init.GPIO_PTx = camcfg->scl.PTx;
+    115            gpio_sccb_init.GPIO_Pins = camcfg->scl.GPIO_Pinn;  
+    116            LPLD_GPIO_Init(gpio_sccb_init);
+    117            
+    118            gpio_sccb_init.GPIO_PTx = camcfg->sda.PTx;
+    119            gpio_sccb_init.GPIO_Pins = camcfg->sda.GPIO_Pinn;  
+    120            LPLD_GPIO_Init(gpio_sccb_init);
+    121            
+    122            LPLD_SCCB_WriteReg(OV7725_COM7, 0x80), SCCB_DELAY(); // Resets all registers to default values
+    123            LPLD_SCCB_ReadReg(OV7725_VER, &lsbid, 1), SCCB_DELAY();
+    124            ASSERT(lsbid == OV7725_LSBID);  
+    125            for(regi=0; regi < reglen; regi++) LPLD_SCCB_WriteReg(landzo_reg_tbl[regi].addr, landzo_reg_tbl[regi].val), SCCB_DELAY();
+    126          }
+    127          
+    128          /*
+    129           * LPLD_SCCB_WriteReg
+    130           * 写SCCB设备寄存器
+    131           * 
+    132           * 参数:
+    133           *    reg_addr--寄存器地址
+    134           *    data--待写数据 
+    135           *
+    136           * 输出:
+    137           *    1-成功
+    138           *    0-失败
+    139           */
+    140          uint8 LPLD_SCCB_WriteReg(uint16 reg_addr , uint8 data)
+    141          {		
+    142            if(!LPLD_SCCB_Start())
+    143            {
+    144              return 0;
+    145            }
+    146            LPLD_SCCB_SendByte( SCCB_DEV_ADR );         
+    147            if( !LPLD_SCCB_WaitAck() )
+    148            {
+    149              LPLD_SCCB_Stop(); 
+    150              return 0;
+    151            }
+    152            LPLD_SCCB_SendByte((uint8)(reg_addr & 0x00FF));   
+    153            LPLD_SCCB_WaitAck();	
+    154            LPLD_SCCB_SendByte(data);
+    155            LPLD_SCCB_WaitAck();   
+    156            LPLD_SCCB_Stop(); 
+    157            return 1;
+    158          }									 
+    159          
+    160          
+    161          
+    162          
+    163          /******************************************************************************************************************
+    164          * 函数名：SCCB_ReadByte
+    165          * 描述  ：读取一串数据
+    166          * 输入  ：- data: 存放读出数据 	- length: 待读出长度	- reg_addr: 待读出地址		 - DeviceAddress: 器件类型
+    167          * 输出  ：返回为:=1成功读入,=0失败
+    168          * 注意  ：无        
+    169          **********************************************************************************************************************/ 
+    170          /*
+    171           * LPLD_SCCB_ReadReg
+    172           * 读SCCB设备寄存器
+    173           * 
+    174           * 参数:
+    175           *    reg_addr--寄存器地址
+    176           *    *data--待存读出数据地址
+    177           *    length--读取长度
+    178           *
+    179           * 输出:
+    180           *    1-成功
+    181           *    0-失败
+    182           */          
+    183          uint8 LPLD_SCCB_ReadReg(uint8 reg_addr, uint8* data, uint16 length)
+    184          {	
+    185            if(!LPLD_SCCB_Start())
+    186            {
+    187              return 0;
+    188            }
+    189            LPLD_SCCB_SendByte( SCCB_DEV_ADR ); 
+    190            if( !LPLD_SCCB_WaitAck() )
+    191            {
+    192              LPLD_SCCB_Stop(); 
+    193              return 0;
+    194            }
+    195            LPLD_SCCB_SendByte( reg_addr ); 
+    196            LPLD_SCCB_WaitAck();	
+    197            LPLD_SCCB_Stop(); 
+    198            
+    199            if(!LPLD_SCCB_Start())
+    200            {
+    201              return 0;
+    202            }
+    203            LPLD_SCCB_SendByte( SCCB_DEV_ADR + 1 ); 
+    204            if(!LPLD_SCCB_WaitAck())
+    205            {
+    206              LPLD_SCCB_Stop(); 
+    207              return 0;
+    208            }
+    209            while(length)
+    210            {
+    211              *data = LPLD_SCCB_ReceiveByte();
+    212              if(length == 1)
+    213              {
+    214                LPLD_SCCB_NoAck();
+    215              }
+    216              else
+    217              {
+    218                LPLD_SCCB_Ack(); 
+    219              }
+    220              data++;
+    221              length--;
+    222            }
+    223            LPLD_SCCB_Stop();
+    224            return 1;
+    225          }
+    226          
+    227          /*
+    228           * LPLD_SCCB_Start
+    229           * SCCB起始信号，内部调用
+    230           */
+    231          static uint8 LPLD_SCCB_Start(void)
+    232          {
+    233            SCCB_SDA_O=1;
+    234            SCCB_SCL=1;
+    235            SCCB_DELAY();
+    236            
+    237            SCCB_SDA_IN();
+    238            if(!SCCB_SDA_I)
+    239            {
+    240              SCCB_SDA_OUT();	
+    241              return 0;
+    242            }
+    243            SCCB_SDA_OUT();	
+    244            SCCB_SDA_O=0;
+    245            
+    246            SCCB_DELAY();
+    247            
+    248            SCCB_SDA_IN();
+    249            if(SCCB_SDA_I) 
+    250            {
+    251              SCCB_SDA_OUT();
+    252              return 0;
+    253            }
+    254            SCCB_SDA_OUT();
+    255            SCCB_SDA_O=0;
+    256          
+    257            return 1;
+    258          }
+    259          
+    260          /*
+    261           * LPLD_SCCB_Stop
+    262           * SCCB停止信号，内部调用
+    263           */
+    264          static void LPLD_SCCB_Stop(void)
+    265          {
+    266            SCCB_SCL=0;
+    267            SCCB_SDA_O=0;
+    268            SCCB_DELAY();
+    269            
+    270            SCCB_SCL=1;
+    271            SCCB_SDA_O=1;
+    272            SCCB_DELAY();
+    273          }
+    274          
+    275          /*
+    276           * LPLD_SCCB_Stop
+    277           * SCCB应答信号，内部调用
+    278           */
+    279          static void LPLD_SCCB_Ack(void)
+    280          {	
+    281            SCCB_SCL=0;
+    282            SCCB_DELAY();
+    283            
+    284            SCCB_SDA_O=0;
+    285            SCCB_DELAY();
+    286            
+    287            SCCB_SCL=1;
+    288            SCCB_DELAY();
+    289            
+    290            SCCB_SCL=0;
+    291            SCCB_DELAY();
+    292          }
+    293          
+    294          /*
+    295           * LPLD_SCCB_NoAck
+    296           * SCCB无应答信号，内部调用
+    297           */
+    298          static void LPLD_SCCB_NoAck(void)
+    299          {	
+    300            SCCB_SCL=0;
+    301            SCCB_DELAY();
+    302            SCCB_SDA_O=1;
+    303            SCCB_DELAY();
+    304            SCCB_SCL=1;
+    305            SCCB_DELAY();
+    306            SCCB_SCL=0;
+    307            SCCB_DELAY();
+    308          }
+    309          
+    310          /*
+    311           * LPLD_SCCB_WaitAck
+    312           * SCCB等待应答信号，内部调用
+    313           */
+    314          static uint8 LPLD_SCCB_WaitAck(void) 	
+    315          {
+    316            SCCB_SCL=0;
+    317            SCCB_DELAY();
+    318            SCCB_SDA_O=1;	
+    319            SCCB_DELAY();
+    320            
+    321            SCCB_SCL=1;
+    322            
+    323            SCCB_SDA_IN();
+    324            SCCB_DELAY();
+    325            
+    326            if(SCCB_SDA_I)
+    327            {
+    328              SCCB_SDA_OUT();
+    329              SCCB_SCL=0;
+    330              return 0;
+    331            }
+    332            SCCB_SDA_OUT();
+    333            SCCB_SCL=0;
+    334            return 1;
+    335          }
+    336          
+    337          /*
+    338           * LPLD_SCCB_SendByte
+    339           * SCCB发送数据，内部调用
+    340           */
+    341          static void LPLD_SCCB_SendByte(uint8 data) 
+    342          {
+    343            uint8 i=8;
+    344            while(i--)
+    345            {
+    346              SCCB_SCL=0;
+    347              SCCB_DELAY();
+    348              if(data&0x80)
+    349              {
+    350                SCCB_SDA_O=1; 
+    351              }
+    352              else 
+    353              {
+    354                SCCB_SDA_O=0;   
+    355              }
+    356              data<<=1;
+    357              SCCB_DELAY();
+    358              SCCB_SCL=1;
+    359              SCCB_DELAY();
+    360            }
+    361            SCCB_SCL=0;
+    362          }
+    363          
+    364          /*
+    365           * LPLD_SCCB_SendByte
+    366           * SCCB接收数据，内部调用
+    367           */
+    368          static uint8 LPLD_SCCB_ReceiveByte(void)  
+    369          { 
+    370            uint8 i=8;
+    371            uint8 ReceiveByte=0;
+    372            
+    373            SCCB_SDA_O=1;	
+    374            SCCB_DELAY();
+    375            
+    376            SCCB_SDA_IN();	
+    377            
+    378            while(i--)
+    379            {
+    380              ReceiveByte<<=1;      
+    381              SCCB_SCL=0;
+    382              SCCB_DELAY();
+    383              
+    384              SCCB_SCL=1;
+    385              SCCB_DELAY();	
+    386              
+    387              if(SCCB_SDA_I)
+    388              {
+    389                ReceiveByte|=0x01;
+    390              }
+    391              
+    392            }
+    393            SCCB_SDA_OUT();
+    394            SCCB_SCL=0;
+    395            
+    396            return ReceiveByte;
+    397          }
+    398          
+    399          /*
+    400           * LPLD_SCCB_SendByte
+    401           * SCCB延时函数，内部调用
+    402           */
+    403          static void LPLD_SCCB_Delay(uint16 i)
+    404          {	
+    405            while(i) 
+    406              i--; 
+    407          }
+    408          
+    409          
+
+Errors: 4
+Warnings: none

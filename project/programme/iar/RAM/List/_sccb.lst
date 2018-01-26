@@ -1,0 +1,228 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM       24/Jan/2018  13:51:53
+# Copyright 1999-2017 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  F:\K60_CAR_2018\lib\peripheral\_sccb.c
+#    Command line =  
+#        -f C:\Users\19071_~1\AppData\Local\Temp\EWDB5E.tmp
+#        (F:\K60_CAR_2018\lib\peripheral\_sccb.c -D LPLD_K60 -D USE_K60DZ10
+#        -lCN F:\K60_CAR_2018\project\programme\iar\RAM\List -lB
+#        F:\K60_CAR_2018\project\programme\iar\RAM\List -o
+#        F:\K60_CAR_2018\project\programme\iar\RAM\Obj --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling
+#        --debug --endian=little --cpu=Cortex-M4 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\INC\c\DLib_Config_Normal.h" -I
+#        F:\K60_CAR_2018\project\programme\iar\..\app\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\CPU\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\common\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\LPLD\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\LPLD\HW\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\LPLD\DEV\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\LPLD\FUNC\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\uCOS-II\Ports\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\uCOS-II\Source\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\FatFs\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\FatFs\option\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\USB\common\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\USB\driver\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\USB\descriptor\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\USB\class\ -I
+#        F:\K60_CAR_2018\project\programme\iar\..\..\..\lib\peripheral\ -Ol -I
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\CMSIS\Include\" -D ARM_MATH_CM4)
+#    Locale       =  C
+#    List file    =  F:\K60_CAR_2018\project\programme\iar\RAM\List\_sccb.lst
+#    Object file  =  F:\K60_CAR_2018\project\programme\iar\RAM\Obj\_sccb.o
+#
+###############################################################################
+
+F:\K60_CAR_2018\lib\peripheral\_sccb.c
+      1          #ifndef __SCCB_H  
+      2          #define __SCCB_H  
+      3            
+      4            
+      5          #define SCL_HIGH         PEout(1) = 1    //设置为输出后输出1  
+      6          #define SCL_LOW         PEout(1) = 0    //设置为输出后输出0  
+      7          #define SCL_OUT     PTE->PDDR|=(1<<1)   //设置为输出  
+      8          //#define   SCL_DDR_IN()      PTE->PDDR&=~(1<<1)//输入  
+      9            
+     10          #define SDA_HIGH         PEout(0)= 1    //设置为输出后输出1  
+     11          #define SDA_LOW         PEout(0)= 0    //设置为输出后输出0  
+     12          #define SDA_DATA        PEin(0)  
+     13          #define SDA_OUT   PTE->PDDR|=(1<<0)  //设置为输出  
+     14          #define SDA_IN    PTE->PDDR&=~(1<<0) //设置为输入  
+     15          #define u8 unsigned char  
+     16          #define u16 unsigned short   
+     17            
+     18          //#define ADDR_OV7725   0x42  
+     19            
+     20          void sccb_init(void);                           //初始化SCCB端口为GPIO  
+     21          void sccb_wait(void);                           //SCCB时序延时  
+     22          void sccb_start(void);                          //起始标志  
+     23          void sccb_stop(void);                           //停止标志  
+     24          u8 sccb_sendByte(u8 data);  
+     25          void sccb_regWrite(u8 device,u8 address,u8 data);  
+     26          #endif   
+     27          
+     28          #include "common.h"
+     29          #include <math.h>
+     30            
+     31          /************************************************************************* 
+     32          *  函数名称：sccb_init 
+     33          *  功能说明：初始化SCCB  其中SCL接PE1 SDA接PTE0 
+     34          *************************************************************************/  
+     35          void sccb_init(void)  
+     36          {  
+     37                      int i ;  
+     38                      GPIO_InitTypeDef GPIO_InitStruct1;    
+     39                      for(i=0;i<8;i++)  
+     40                      {  
+     41                          GPIO_InitStruct1.GPIO_Pin = i;  
+     42                          GPIO_InitStruct1.GPIO_InitState = Bit_RESET; //change as Bit_Set , it will shut.  
+     43                          GPIO_InitStruct1.GPIO_IRQMode = GPIO_IT_DISABLE;  
+     44                          GPIO_InitStruct1.GPIO_Mode = GPIO_Mode_IN_FLOATING;  
+     45                          GPIO_InitStruct1.GPIOx = PTD;  
+     46                          GPIO_Init(&GPIO_InitStruct1);  
+     47                      }  
+     48                        
+     49                       GPIO_InitStruct1.GPIO_Pin = 0;  
+     50                       GPIO_InitStruct1.GPIO_InitState = Bit_RESET;  
+     51                       GPIO_InitStruct1.GPIO_IRQMode = GPIO_IT_DISABLE;  
+     52                       GPIO_InitStruct1.GPIO_Mode = GPIO_Mode_OPP;  
+     53                       GPIO_InitStruct1.GPIOx = PTE;  
+     54                       GPIO_Init(&GPIO_InitStruct1);    
+     55                        
+     56                      GPIO_InitStruct1.GPIO_Pin = 1;  
+     57                      GPIO_InitStruct1.GPIO_InitState = Bit_RESET;  
+     58                      GPIO_InitStruct1.GPIO_IRQMode = GPIO_IT_DISABLE;  
+     59                      GPIO_InitStruct1.GPIO_Mode = GPIO_Mode_OPP;  
+     60                      GPIO_InitStruct1.GPIOx = PTE;  
+     61                      GPIO_Init(&GPIO_InitStruct1);  
+     62          }  
+     63          /************************************************************************ 
+     64          *  函数名称：sccb_wait 
+     65          *  功能说明：SCCB延时，不应太小 
+     66          *************************************************************************/  
+     67          void sccb_wait(void)  
+     68          {  
+     69            u8 i;  
+     70            u16 j;  
+     71            for( i=0; i<100; i++)  
+     72            {  
+     73              j++;  
+     74            }  
+     75          }  
+     76          /************************************************************************ 
+     77          *  函数名称：sccb_start 
+     78          *  功能说明：SCCB启动位 
+     79          *************************************************************************/  
+     80          void sccb_start(void)  
+     81          {  
+     82            SCL_OUT;  
+     83            SDA_OUT;  
+     84             
+     85            SDA_HIGH;  
+     86            //sccb_wait();  
+     87            SCL_HIGH;  
+     88            sccb_wait();  
+     89            SDA_LOW;  
+     90            sccb_wait();  
+     91            SCL_LOW;  
+     92          }  
+     93            
+     94          /************************************************************************ 
+     95          *  函数名称：sccb_stop 
+     96          *  功能说明：SCCB停止位 
+     97          *************************************************************************/  
+     98          void sccb_stop(void)  
+     99          {  
+    100            SCL_OUT;  
+    101            SDA_OUT;  
+    102              
+    103            SDA_LOW;  
+    104            sccb_wait();  
+    105            SCL_HIGH;  
+    106            sccb_wait();  
+    107            SDA_HIGH;  
+    108            sccb_wait();  
+    109          }  
+    110            
+    111          /************************************************************************ 
+    112          *  函数名称：sccb_sendByte 
+    113          *  功能说明：在SCCB总线上发送一个字节 
+    114          *  参数说明：data 要发送的字节内容 
+    115          *************************************************************************/  
+    116          u8 sccb_sendByte(u8 data)  
+    117          {  
+    118            u8 i;  
+    119             u8 ack;  
+    120            SDA_OUT;  
+    121            for( i=0; i<8; i++)  
+    122            {  
+    123              if(data & 0x80)  
+    124                SDA_HIGH;  
+    125              else   
+    126                SDA_LOW;  
+    127              data <<= 1;  
+    128              sccb_wait();  
+    129              SCL_HIGH;  
+    130              sccb_wait();  
+    131              SCL_LOW;  
+    132              sccb_wait();  
+    133            }  
+    134            SDA_HIGH;  
+    135            SDA_IN;  
+    136            sccb_wait();  
+    137            SCL_HIGH;  
+    138            sccb_wait();  
+    139            ack = SDA_DATA;  
+    140            SCL_LOW;  
+    141            sccb_wait();  
+    142            return ack;  
+    143          }  
+    144            
+    145            
+    146          /************************************************************************ 
+    147          *  函数名称：sccb_regWrite 
+    148          *  功能说明：通过SCCB总线向指定设备的指定地址发送指定内容 
+    149          *  参数说明：device---设备号  读写有区别  42是写，43是写 
+    150          *            address---写数据的寄存器 
+    151          *            data---写的内容 
+    152          *  函数返回：ack=1未收到应答(失败)    ack=0收到应答(成功) 
+    153          *************************************************************************/  
+    154          void sccb_regWrite(u8 device,u8 address,u8 data)  
+    155          {  
+    156           // u8 i;  
+    157            u8 ack;  
+    158          //  for( i=0; i<20; i++)  
+    159          //  {  
+    160              sccb_start();  
+    161              ack = sccb_sendByte(device);  
+    162              while( ack )  
+    163              {  
+    164                ack = sccb_sendByte(device);  
+    165              //      printf("device\n\r");  
+    166              }     
+    167              ack = sccb_sendByte(address);  
+    168              while( ack )  
+    169              {  
+    170                ack = sccb_sendByte(address);;  
+    171            //    printf("address\n\r");  
+    172              }  
+    173              ack = sccb_sendByte(data);  
+    174              while( ack  )  
+    175              {  
+    176               ack = sccb_sendByte(data);  
+    177            //    printf("data\n\r");  
+    178              }     
+    179              sccb_stop();  
+    180          //    if( ack == 0 ) break;  
+    181          //  }  
+    182          }  
+
+Errors: 38
+Warnings: 9

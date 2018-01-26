@@ -1,13 +1,13 @@
 ###############################################################################
 #
-# IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM       20/Jan/2018  23:52:35
+# IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM       25/Jan/2018  20:32:00
 # Copyright 1999-2017 IAR Systems AB.
 #
 #    Cpu mode     =  thumb
 #    Endian       =  little
 #    Source file  =  F:\K60_CAR_2018\project\programme\app\program.c
 #    Command line =  
-#        -f C:\Users\19071_~1\AppData\Local\Temp\EW2A2.tmp
+#        -f C:\Users\19071_~1\AppData\Local\Temp\EW29B6.tmp
 #        (F:\K60_CAR_2018\project\programme\app\program.c -D LPLD_K60 -D
 #        USE_K60DZ10 -lCN F:\K60_CAR_2018\project\programme\iar\RAM\List -lB
 #        F:\K60_CAR_2018\project\programme\iar\RAM\List -o
@@ -95,23 +95,26 @@ F:\K60_CAR_2018\project\programme\app\program.c
      44          
      45           // app__motor_dev();
      46           //app__steer_dev();
-     47            app__blind();
-   \   00000002   0x.... 0x....      BL       app__blind
-     48            
+     47          // app__blind();
+     48          app__camera_test();
+   \   00000002   0x.... 0x....      BL       app__camera_test
      49            
-     50            while(1){
+     50            
+     51          
+     52            
+     53            while(1){
    \                     ??main_0: (+1)
    \   00000006   0xE7FE             B.N      ??main_0
-     51            
-     52            }
-     53          }
+     54              
+     55            }
+     56          }
 
    Maximum stack usage in bytes:
 
    .cstack Function
    ------- --------
        8   main
-         8   -> app__blind
+         8   -> app__camera_test
 
 
    Section sizes:

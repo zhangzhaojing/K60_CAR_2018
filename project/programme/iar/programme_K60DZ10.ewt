@@ -3475,6 +3475,9 @@
             <name>$PROJ_DIR$\..\app\blind.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\app\camera_test.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\app\k60_card.h</name>
         </file>
         <file>
@@ -3553,6 +3556,12 @@
             <name>LPLD</name>
             <group>
                 <name>DEV</name>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\lib\LPLD\DEV\DEV_SCCB.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\lib\LPLD\DEV\DEV_SCCB.h</name>
+                </file>
             </group>
             <group>
                 <name>HW</name>

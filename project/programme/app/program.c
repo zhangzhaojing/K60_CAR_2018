@@ -44,10 +44,13 @@ void main (void)
 
  // app__motor_dev();
  //app__steer_dev();
-  app__blind();
+// app__blind();
+app__camera_test();
   
+  
+
   
   while(1){
-  
+    
   }
 }

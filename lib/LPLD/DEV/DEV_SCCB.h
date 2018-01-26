@@ -30,9 +30,9 @@
 //定义SCCB设备地址
 #define SCCB_DEV_ADR    ADR_OV7670
 //定义SCL、SDA的引脚
-#define SCCB_SCL        PTB0_O  
-#define SCCB_SDA_O      PTB1_O 
-#define SCCB_SDA_I      PTB1_I 
+#define SCCB_SCL        PTE10_O  
+#define SCCB_SDA_O      PTE12_O 
+#define SCCB_SDA_I      PTE12_I 
 //定义SDA输入输出
 #define SCCB_SDA_OUT()  DDRB1=1
 #define SCCB_SDA_IN()   DDRB1=0

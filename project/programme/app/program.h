@@ -7,6 +7,9 @@ extern void app__steer_dev(void);
 extern void app__motor_dev(void);
 extern void app__servo_control(void);
 extern void app__blind(void);
+extern void app__camera_test(void);
+
+
 extern void app__camera_dev(void);
 
 #endif

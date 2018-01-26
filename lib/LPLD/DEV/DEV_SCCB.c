@@ -38,8 +38,8 @@ void LPLD_SCCB_Init(void)
 {
   GPIO_InitTypeDef ptb;
   /********用户可修改值 开始***********/
-  ptb.GPIO_PTx = PTB;
-  ptb.GPIO_Pins = GPIO_Pin0 | GPIO_Pin1;
+  ptb.GPIO_PTx = PTE;
+  ptb.GPIO_Pins = GPIO_Pin12 | GPIO_Pin10;
   /********用户可修改值 结束***********/
   ptb.GPIO_Dir = DIR_OUTPUT;
   ptb.GPIO_Output = OUTPUT_H;

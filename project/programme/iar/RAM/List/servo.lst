@@ -1,13 +1,13 @@
 ###############################################################################
 #
-# IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM       20/Jan/2018  23:10:03
+# IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM       25/Jan/2018  20:32:00
 # Copyright 1999-2017 IAR Systems AB.
 #
 #    Cpu mode     =  thumb
 #    Endian       =  little
 #    Source file  =  F:\K60_CAR_2018\lib\peripheral\servo.c
 #    Command line =  
-#        -f C:\Users\19071_~1\AppData\Local\Temp\EWECE.tmp
+#        -f C:\Users\19071_~1\AppData\Local\Temp\EW2AB3.tmp
 #        (F:\K60_CAR_2018\lib\peripheral\servo.c -D LPLD_K60 -D USE_K60DZ10
 #        -lCN F:\K60_CAR_2018\project\programme\iar\RAM\List -lB
 #        F:\K60_CAR_2018\project\programme\iar\RAM\List -o
@@ -145,68 +145,21 @@ F:\K60_CAR_2018\lib\peripheral\servo.c
    \   00000004   0x....             LDR.N    R1,??DataTable4
    \   00000006   0x6809             LDR      R1,[R1, #+0]
    \   00000008   0x6288             STR      R0,[R1, #+40]
-     24              if(srv->duty>(srv->median+srv->amplitude))  srv->duty=srv->median+srv->amplitude;
+     24             // if(srv->duty>(srv->median+srv->amplitude))  srv->duty=srv->median+srv->amplitude;
+     25            //  else if (srv->duty<(srv->median-srv->amplitude))  srv->duty=srv->median-srv->amplitude;
+     26              LPLD_FTM_PWM_ChangeDuty(srv->FTMn,srv->FTM_Chn,srv->duty);
    \   0000000A   0x....             LDR.N    R0,??DataTable4
    \   0000000C   0x6800             LDR      R0,[R0, #+0]
-   \   0000000E   0x68C1             LDR      R1,[R0, #+12]
+   \   0000000E   0x6A82             LDR      R2,[R0, #+40]
    \   00000010   0x....             LDR.N    R0,??DataTable4
    \   00000012   0x6800             LDR      R0,[R0, #+0]
-   \   00000014   0x6900             LDR      R0,[R0, #+16]
-   \   00000016   0x1841             ADDS     R1,R0,R1
-   \   00000018   0x....             LDR.N    R0,??DataTable4
+   \   00000014   0x7901             LDRB     R1,[R0, #+4]
+   \   00000016   0x....             LDR.N    R0,??DataTable4
+   \   00000018   0x6800             LDR      R0,[R0, #+0]
    \   0000001A   0x6800             LDR      R0,[R0, #+0]
-   \   0000001C   0x6A80             LDR      R0,[R0, #+40]
-   \   0000001E   0x4281             CMP      R1,R0
-   \   00000020   0xD20A             BCS.N    ??servo__set_duty_0
-   \   00000022   0x....             LDR.N    R0,??DataTable4
-   \   00000024   0x6800             LDR      R0,[R0, #+0]
-   \   00000026   0x68C1             LDR      R1,[R0, #+12]
-   \   00000028   0x....             LDR.N    R0,??DataTable4
-   \   0000002A   0x6800             LDR      R0,[R0, #+0]
-   \   0000002C   0x6900             LDR      R0,[R0, #+16]
-   \   0000002E   0x1841             ADDS     R1,R0,R1
-   \   00000030   0x....             LDR.N    R0,??DataTable4
-   \   00000032   0x6800             LDR      R0,[R0, #+0]
-   \   00000034   0x6281             STR      R1,[R0, #+40]
-   \   00000036   0xE015             B.N      ??servo__set_duty_1
-     25              else if (srv->duty<(srv->median-srv->amplitude))  srv->duty=srv->median-srv->amplitude;
-   \                     ??servo__set_duty_0: (+1)
-   \   00000038   0x....             LDR.N    R0,??DataTable4
-   \   0000003A   0x6800             LDR      R0,[R0, #+0]
-   \   0000003C   0x6A81             LDR      R1,[R0, #+40]
-   \   0000003E   0x....             LDR.N    R0,??DataTable4
-   \   00000040   0x6800             LDR      R0,[R0, #+0]
-   \   00000042   0x68C2             LDR      R2,[R0, #+12]
-   \   00000044   0x....             LDR.N    R0,??DataTable4
-   \   00000046   0x6800             LDR      R0,[R0, #+0]
-   \   00000048   0x6900             LDR      R0,[R0, #+16]
-   \   0000004A   0x1A12             SUBS     R2,R2,R0
-   \   0000004C   0x4291             CMP      R1,R2
-   \   0000004E   0xD209             BCS.N    ??servo__set_duty_1
-   \   00000050   0x....             LDR.N    R0,??DataTable4
-   \   00000052   0x6800             LDR      R0,[R0, #+0]
-   \   00000054   0x68C1             LDR      R1,[R0, #+12]
-   \   00000056   0x....             LDR.N    R0,??DataTable4
-   \   00000058   0x6800             LDR      R0,[R0, #+0]
-   \   0000005A   0x6900             LDR      R0,[R0, #+16]
-   \   0000005C   0x1A09             SUBS     R1,R1,R0
-   \   0000005E   0x....             LDR.N    R0,??DataTable4
-   \   00000060   0x6800             LDR      R0,[R0, #+0]
-   \   00000062   0x6281             STR      R1,[R0, #+40]
-     26              LPLD_FTM_PWM_ChangeDuty(srv->FTMn,srv->FTM_Chn,srv->duty);
-   \                     ??servo__set_duty_1: (+1)
-   \   00000064   0x....             LDR.N    R0,??DataTable4
-   \   00000066   0x6800             LDR      R0,[R0, #+0]
-   \   00000068   0x6A82             LDR      R2,[R0, #+40]
-   \   0000006A   0x....             LDR.N    R0,??DataTable4
-   \   0000006C   0x6800             LDR      R0,[R0, #+0]
-   \   0000006E   0x7901             LDRB     R1,[R0, #+4]
-   \   00000070   0x....             LDR.N    R0,??DataTable4
-   \   00000072   0x6800             LDR      R0,[R0, #+0]
-   \   00000074   0x6800             LDR      R0,[R0, #+0]
-   \   00000076   0x.... 0x....      BL       LPLD_FTM_PWM_ChangeDuty
+   \   0000001C   0x.... 0x....      BL       LPLD_FTM_PWM_ChangeDuty
      27          }
-   \   0000007A   0xBD01             POP      {R0,PC}          ;; return
+   \   00000020   0xBD01             POP      {R0,PC}          ;; return
      28          
      29          
 
@@ -282,73 +235,26 @@ F:\K60_CAR_2018\lib\peripheral\servo.c
    \   0000009C   0x....             LDR.N    R1,??DataTable4
    \   0000009E   0x6809             LDR      R1,[R1, #+0]
    \   000000A0   0x6288             STR      R0,[R1, #+40]
-     35            if(srv->duty>(srv->median+srv->amplitude))  srv->duty=srv->median+srv->amplitude;
+     35            //if(srv->duty>(srv->median+srv->amplitude))  srv->duty=srv->median+srv->amplitude;
+     36            //else if (srv->duty<(srv->median-srv->amplitude))  srv->duty=srv->median-srv->amplitude;
+     37            LPLD_FTM_PWM_ChangeDuty(srv->FTMn, srv->FTM_Chn, srv->duty);
    \                     ??servo__set_radius_dir_1: (+1)
    \   000000A2   0x....             LDR.N    R0,??DataTable4
    \   000000A4   0x6800             LDR      R0,[R0, #+0]
-   \   000000A6   0x68C1             LDR      R1,[R0, #+12]
+   \   000000A6   0x6A82             LDR      R2,[R0, #+40]
    \   000000A8   0x....             LDR.N    R0,??DataTable4
    \   000000AA   0x6800             LDR      R0,[R0, #+0]
-   \   000000AC   0x6900             LDR      R0,[R0, #+16]
-   \   000000AE   0x1841             ADDS     R1,R0,R1
-   \   000000B0   0x....             LDR.N    R0,??DataTable4
+   \   000000AC   0x7901             LDRB     R1,[R0, #+4]
+   \   000000AE   0x....             LDR.N    R0,??DataTable4
+   \   000000B0   0x6800             LDR      R0,[R0, #+0]
    \   000000B2   0x6800             LDR      R0,[R0, #+0]
-   \   000000B4   0x6A80             LDR      R0,[R0, #+40]
-   \   000000B6   0x4281             CMP      R1,R0
-   \   000000B8   0xD20A             BCS.N    ??servo__set_radius_dir_2
-   \   000000BA   0x....             LDR.N    R0,??DataTable4
-   \   000000BC   0x6800             LDR      R0,[R0, #+0]
-   \   000000BE   0x68C1             LDR      R1,[R0, #+12]
-   \   000000C0   0x....             LDR.N    R0,??DataTable4
-   \   000000C2   0x6800             LDR      R0,[R0, #+0]
-   \   000000C4   0x6900             LDR      R0,[R0, #+16]
-   \   000000C6   0x1841             ADDS     R1,R0,R1
-   \   000000C8   0x....             LDR.N    R0,??DataTable4
-   \   000000CA   0x6800             LDR      R0,[R0, #+0]
-   \   000000CC   0x6281             STR      R1,[R0, #+40]
-   \   000000CE   0xE015             B.N      ??servo__set_radius_dir_3
-     36            else if (srv->duty<(srv->median-srv->amplitude))  srv->duty=srv->median-srv->amplitude;
-   \                     ??servo__set_radius_dir_2: (+1)
-   \   000000D0   0x....             LDR.N    R0,??DataTable4
-   \   000000D2   0x6800             LDR      R0,[R0, #+0]
-   \   000000D4   0x6A81             LDR      R1,[R0, #+40]
-   \   000000D6   0x....             LDR.N    R0,??DataTable4
-   \   000000D8   0x6800             LDR      R0,[R0, #+0]
-   \   000000DA   0x68C2             LDR      R2,[R0, #+12]
-   \   000000DC   0x....             LDR.N    R0,??DataTable4
-   \   000000DE   0x6800             LDR      R0,[R0, #+0]
-   \   000000E0   0x6900             LDR      R0,[R0, #+16]
-   \   000000E2   0x1A12             SUBS     R2,R2,R0
-   \   000000E4   0x4291             CMP      R1,R2
-   \   000000E6   0xD209             BCS.N    ??servo__set_radius_dir_3
-   \   000000E8   0x....             LDR.N    R0,??DataTable4
-   \   000000EA   0x6800             LDR      R0,[R0, #+0]
-   \   000000EC   0x68C1             LDR      R1,[R0, #+12]
-   \   000000EE   0x....             LDR.N    R0,??DataTable4
-   \   000000F0   0x6800             LDR      R0,[R0, #+0]
-   \   000000F2   0x6900             LDR      R0,[R0, #+16]
-   \   000000F4   0x1A09             SUBS     R1,R1,R0
-   \   000000F6   0x....             LDR.N    R0,??DataTable4
-   \   000000F8   0x6800             LDR      R0,[R0, #+0]
-   \   000000FA   0x6281             STR      R1,[R0, #+40]
-     37            LPLD_FTM_PWM_ChangeDuty(srv->FTMn, srv->FTM_Chn, srv->duty);
-   \                     ??servo__set_radius_dir_3: (+1)
-   \   000000FC   0x....             LDR.N    R0,??DataTable4
-   \   000000FE   0x6800             LDR      R0,[R0, #+0]
-   \   00000100   0x6A82             LDR      R2,[R0, #+40]
-   \   00000102   0x....             LDR.N    R0,??DataTable4
-   \   00000104   0x6800             LDR      R0,[R0, #+0]
-   \   00000106   0x7901             LDRB     R1,[R0, #+4]
-   \   00000108   0x....             LDR.N    R0,??DataTable4
-   \   0000010A   0x6800             LDR      R0,[R0, #+0]
-   \   0000010C   0x6800             LDR      R0,[R0, #+0]
-   \   0000010E   0x.... 0x....      BL       LPLD_FTM_PWM_ChangeDuty
+   \   000000B4   0x.... 0x....      BL       LPLD_FTM_PWM_ChangeDuty
      38            srv->dir=dir;
-   \   00000112   0x....             LDR.N    R0,??DataTable4
-   \   00000114   0x6800             LDR      R0,[R0, #+0]
-   \   00000116   0x62C6             STR      R6,[R0, #+44]
+   \   000000B8   0x....             LDR.N    R0,??DataTable4
+   \   000000BA   0x6800             LDR      R0,[R0, #+0]
+   \   000000BC   0x62C6             STR      R6,[R0, #+44]
      39          }
-   \   00000118   0xE8BD 0x8370      POP      {R4-R6,R8,R9,PC}  ;; return
+   \   000000BE   0xE8BD 0x8370      POP      {R4-R6,R8,R9,PC}  ;; return
      40          
 
    \                                 In section .text, align 2, keep-with-next
@@ -481,16 +387,16 @@ F:\K60_CAR_2018\lib\peripheral\servo.c
      112  servo__config
        8  servo__get_duty
      158  servo__get_radius
-     124  servo__set_duty
-     284  servo__set_radius_dir
+      34  servo__set_duty
+     194  servo__set_radius_dir
        4  srv
 
  
    4 bytes in section .bss
   28 bytes in section .rodata
- 690 bytes in section .text
+ 510 bytes in section .text
  
- 690 bytes of CODE  memory
+ 510 bytes of CODE  memory
   28 bytes of CONST memory
    4 bytes of DATA  memory
 

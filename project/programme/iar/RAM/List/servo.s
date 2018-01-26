@@ -1,13 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      20/Jan/2018  23:10:03
+// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      25/Jan/2018  20:32:00
 // Copyright 1999-2017 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
 //    Endian       =  little
 //    Source file  =  F:\K60_CAR_2018\lib\peripheral\servo.c
 //    Command line =  
-//        -f C:\Users\19071_~1\AppData\Local\Temp\EWECE.tmp
+//        -f C:\Users\19071_~1\AppData\Local\Temp\EW2AB3.tmp
 //        (F:\K60_CAR_2018\lib\peripheral\servo.c -D LPLD_K60 -D USE_K60DZ10
 //        -lCN F:\K60_CAR_2018\project\programme\iar\RAM\List -lB
 //        F:\K60_CAR_2018\project\programme\iar\RAM\List -o
@@ -163,56 +163,9 @@ servo__set_duty:
         LDR.N    R1,??DataTable4
         LDR      R1,[R1, #+0]
         STR      R0,[R1, #+40]
-//   24     if(srv->duty>(srv->median+srv->amplitude))  srv->duty=srv->median+srv->amplitude;
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R1,[R0, #+12]
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R0,[R0, #+16]
-        ADDS     R1,R0,R1
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R0,[R0, #+40]
-        CMP      R1,R0
-        BCS.N    ??servo__set_duty_0
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R1,[R0, #+12]
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R0,[R0, #+16]
-        ADDS     R1,R0,R1
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        STR      R1,[R0, #+40]
-        B.N      ??servo__set_duty_1
-//   25     else if (srv->duty<(srv->median-srv->amplitude))  srv->duty=srv->median-srv->amplitude;
-??servo__set_duty_0:
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R1,[R0, #+40]
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R2,[R0, #+12]
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R0,[R0, #+16]
-        SUBS     R2,R2,R0
-        CMP      R1,R2
-        BCS.N    ??servo__set_duty_1
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R1,[R0, #+12]
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R0,[R0, #+16]
-        SUBS     R1,R1,R0
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        STR      R1,[R0, #+40]
+//   24    // if(srv->duty>(srv->median+srv->amplitude))  srv->duty=srv->median+srv->amplitude;
+//   25   //  else if (srv->duty<(srv->median-srv->amplitude))  srv->duty=srv->median-srv->amplitude;
 //   26     LPLD_FTM_PWM_ChangeDuty(srv->FTMn,srv->FTM_Chn,srv->duty);
-??servo__set_duty_1:
         LDR.N    R0,??DataTable4
         LDR      R0,[R0, #+0]
         LDR      R2,[R0, #+40]
@@ -301,57 +254,10 @@ servo__set_radius_dir:
         LDR.N    R1,??DataTable4
         LDR      R1,[R1, #+0]
         STR      R0,[R1, #+40]
-//   35   if(srv->duty>(srv->median+srv->amplitude))  srv->duty=srv->median+srv->amplitude;
-??servo__set_radius_dir_1:
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R1,[R0, #+12]
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R0,[R0, #+16]
-        ADDS     R1,R0,R1
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R0,[R0, #+40]
-        CMP      R1,R0
-        BCS.N    ??servo__set_radius_dir_2
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R1,[R0, #+12]
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R0,[R0, #+16]
-        ADDS     R1,R0,R1
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        STR      R1,[R0, #+40]
-        B.N      ??servo__set_radius_dir_3
-//   36   else if (srv->duty<(srv->median-srv->amplitude))  srv->duty=srv->median-srv->amplitude;
-??servo__set_radius_dir_2:
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R1,[R0, #+40]
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R2,[R0, #+12]
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R0,[R0, #+16]
-        SUBS     R2,R2,R0
-        CMP      R1,R2
-        BCS.N    ??servo__set_radius_dir_3
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R1,[R0, #+12]
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        LDR      R0,[R0, #+16]
-        SUBS     R1,R1,R0
-        LDR.N    R0,??DataTable4
-        LDR      R0,[R0, #+0]
-        STR      R1,[R0, #+40]
+//   35   //if(srv->duty>(srv->median+srv->amplitude))  srv->duty=srv->median+srv->amplitude;
+//   36   //else if (srv->duty<(srv->median-srv->amplitude))  srv->duty=srv->median-srv->amplitude;
 //   37   LPLD_FTM_PWM_ChangeDuty(srv->FTMn, srv->FTM_Chn, srv->duty);
-??servo__set_radius_dir_3:
+??servo__set_radius_dir_1:
         LDR.N    R0,??DataTable4
         LDR      R0,[R0, #+0]
         LDR      R2,[R0, #+40]
@@ -474,9 +380,9 @@ servo__get_radius:
 // 
 //   4 bytes in section .bss
 //  28 bytes in section .rodata
-// 690 bytes in section .text
+// 510 bytes in section .text
 // 
-// 690 bytes of CODE  memory
+// 510 bytes of CODE  memory
 //  28 bytes of CONST memory
 //   4 bytes of DATA  memory
 //

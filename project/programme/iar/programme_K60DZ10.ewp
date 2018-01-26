@@ -767,7 +767,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$PROJ_DIR$\..\..\..\lib\iar_config_files\LPLD_K60DN512_RAM.icf</state>
+                    <state>F:\K60_CAR_2018\lib\iar_config_files\LPLD_K60DN512_FLASH.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -3083,6 +3083,9 @@
             <name>$PROJ_DIR$\..\app\blind.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\app\camera_test.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\app\k60_card.h</name>
         </file>
         <file>
@@ -3161,6 +3164,12 @@
             <name>LPLD</name>
             <group>
                 <name>DEV</name>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\lib\LPLD\DEV\DEV_SCCB.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\lib\LPLD\DEV\DEV_SCCB.h</name>
+                </file>
             </group>
             <group>
                 <name>HW</name>

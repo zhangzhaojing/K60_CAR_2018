@@ -3,6 +3,8 @@
 
 static motor_control_t *mtrctrl;
 
+static uint32 average_num=0;
+
 void pit_motor_control(void){
   static uint32 pit_enter_counter;
   static uint16 placc_temp_value[2];
@@ -11,18 +13,22 @@ void pit_motor_control(void){
       placc_temp_value[1] = LPLD_LPTMR_GetPulseAcc();
   }while(abs_diff(placc_temp_value[0], placc_temp_value[1])>1);
   
-  switch(0){
-    case 0:
+  //switch(0){
+   // case 0:
         mtrctrl->ecdlft.value = placc_temp_value[1];
-        break;
-    case 1:
+   //     break;
+   // case 1:
         mtrctrl->ecdrgt.value  = placc_temp_value[1];
-        break;
-  }
-  pit_enter_counter++;
+   //     break;
+  //}
+ 
+  
 
   mtrctrl->ecdlft.mileage += mtrctrl->ecdlft.value;
   mtrctrl->ecdrgt.mileage += mtrctrl->ecdrgt.value;
+  
+  average_num= mtrctrl->ecdlft.mileage;
+  pit_enter_counter++;
   
 //µ¥¹â±àcounterÇåÁã
   LPTMR0->CSR&=(~LPTMR_CSR_TEN_MASK); 
@@ -76,13 +82,15 @@ void motor_control__config(motor_control_t *mtrctrl_usr){
   mtrctrl->pit_init_param.PIT_Pitx=mtrctrl->pit;
   mtrctrl->pit_init_param.PIT_PeriodMs=mtrctrl->period_ms;
   mtrctrl->pit_init_param.PIT_Isr=pit_motor_control;
+  LPLD_PIT_Init(mtrctrl->pit_init_param);
   
   //LPTMR
   memset(&(mtrctrl->lptmr_init_param),0,sizeof(LPTMR_InitTypeDef));
   mtrctrl->lptmr_init_param.LPTMR_Mode =LPTMR_MODE_PLACC;
-  mtrctrl->lptmr_init_param.LPTMR_PluseAccInput =mtrctrl->ecd_lft.LPTMR_ALTn;
-  LPLD_LPTMR_Init(mtrctrl->lptmr_init_param);
+
   mtrctrl->lptmr_init_param.LPTMR_PluseAccInput =mtrctrl->ecd_rgt.LPTMR_ALTn;
+  LPLD_LPTMR_Init(mtrctrl->lptmr_init_param);
+    mtrctrl->lptmr_init_param.LPTMR_PluseAccInput =mtrctrl->ecd_lft.LPTMR_ALTn;
   LPLD_LPTMR_Init(mtrctrl->lptmr_init_param);
   
   //mile

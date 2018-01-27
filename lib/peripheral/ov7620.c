@@ -4,27 +4,37 @@
 #define H_MAX 240//hangshu
 #define L_MAX 320//lieshu
 
+void camera__take_a_photo_please_();
+UART_InitTypeDef uart0_init_struct;
+
 static boolean acq_flag;
 static boolean allow_acq_once;
 static int camera_error;//0:OK 1:ROW_MISS 2:COL_MISS
 
-static uint32 vsync_cnt, href_cnt, rowacq_cnt;
+static uint32 vsync_cnt,href_cnt, rowacq_cnt;
 uint8 Pix_Data[H_MAX][L_MAX];
 
 static GPIO_InitTypeDef gpio_init_vh;
 static DMA_InitTypeDef  dma_init;
 
+
+void uart_init(void)
+{
+  uart0_init_struct.UART_Uartx = UART0; //使用UART0
+  uart0_init_struct.UART_BaudRate = 9600; //设置波特率9600
+  uart0_init_struct.UART_RxPin = PTA15;  //接收引脚为PTE15
+  uart0_init_struct.UART_TxPin = PTA14;  //发送引脚为PTE14
+  //初始化UART
+  LPLD_UART_Init(uart0_init_struct);
+}
+///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 static void vsync_href_isr(){
   //vsync_isr
     if(LPLD_GPIO_IsPinxExt(PORTD, GPIO_Pin14))
   {
-   // LPLD_GPIO_ClearIntFlag(PORTD);
     if(allow_acq_once){
-    LPLD_DMA_LoadDstAddr(DMA_CH0, Pix_Data);//初始化DMA地址
-    //LPLD_DMA_DisableReq(DMA_CH0);
-    //LPLD_DMA_EnableIrq(dma_init);
-    
-    //dummy_delay_ms(1);
+    LPLD_DMA_LoadDstAddr(DMA_CH0, Pix_Data);//初始化DMA地址    
     
     camera_error=0;
     allow_acq_once=FALSE;
@@ -32,24 +42,20 @@ static void vsync_href_isr(){
     href_cnt=0;//行数
     rowacq_cnt=0;//采集的行数
     acq_flag=TRUE;//flag=true 相当于使能行中断
-    }else if(acq_flag){
+    }else if(acq_flag){    //ROW_MISS
           acq_flag=FALSE;
           camera_error=1;
           allow_acq_once=TRUE;
           LPLD_GPIO_ClearIntFlag(PORTD);
     }
-    
     return;
   }
   
   //href_isr
     if(LPLD_GPIO_IsPinxExt(PORTD, GPIO_Pin13))
-  {
-   // LPLD_GPIO_ClearIntFlag(PORTD);
-    
+  {    
     if(acq_flag){
     LPLD_DMA_EnableReq(DMA_CH0);
-   // LPLD_DMA_EnableIrq(dma_init);
     href_cnt++;//行数自加    
     }
     
@@ -58,42 +64,35 @@ static void vsync_href_isr(){
 }
 
 
-static void row_finish(){     //DMA中断
-  rowacq_cnt++;//已采集行数自加
+static void row_finish(){     //DMA中断函数
   
-  //LPLD_DMA_DisableReq(DMA_CH0);
-  //LPLD_DMA_DisableIrq(dma_init);
+  rowacq_cnt++;//已采集行数自加
   
   if(rowacq_cnt==H_MAX){//行数采集完FLAG=0（关闭行中断）
      acq_flag = FALSE;
      disable_irq(PORTD_IRQn);
      
      /*imag proc*/
+     //LPLD_UART_PutCharArr(UART0, Pix_Data, H_MAX*L_MAX);//send picture
+     camera__take_a_photo_please_();
   }
 }
 
 void camera__take_a_photo_please_(){
     if(acq_flag == TRUE) return;
-    allow_acq_once==TRUE;
+    allow_acq_once=1;
     LPLD_GPIO_ClearIntFlag(PORTD);
     enable_irq(PORTD_IRQn);
+    LPLD_DMA_EnableIrq(dma_init);
 }
 
-//#include "DEV_SCCB.h"
 
 
 void ov7620__config(){
   
-  
     GPIO_InitTypeDef gpio_init_vh={0};
     GPIO_InitTypeDef gpio_init={0};
     DMA_InitTypeDef  dma_init={0};
-    
-//    LPLD_SCCB_Init();
-//    LPLD_SCCB_WriteReg(0x14 ,0x24);
-//    LPLD_SCCB_WriteReg(0x28,0x40);
-//    LPLD_SCCB_WriteReg(0x11,0x01);
-//    
     
     // init vsync_href
     gpio_init_vh.GPIO_PTx = PTD;
@@ -102,7 +101,6 @@ void ov7620__config(){
     gpio_init_vh.GPIO_Isr = vsync_href_isr;
     gpio_init_vh.GPIO_PinControl = INPUT_PULL_UP|IRQC_RI; //上升沿内部上拉
     LPLD_GPIO_Init(gpio_init_vh);
-    
         
     // init pclk
     gpio_init.GPIO_PTx = PTD;
@@ -139,7 +137,6 @@ void ov7620__config(){
     ///////////////
     vsync_cnt=0;
     allow_acq_once=TRUE;
-    //acq_flag=0;
     
     //////////////////
     NVIC_SetPriority((IRQn_Type)(DMA_CH0),NVIC_EncodePriority(NVIC_PriorityGroup_4,9,0));

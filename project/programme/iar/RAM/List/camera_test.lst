@@ -1,13 +1,13 @@
 ###############################################################################
 #
-# IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM       26/Jan/2018  13:20:18
+# IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM       27/Jan/2018  16:58:34
 # Copyright 1999-2017 IAR Systems AB.
 #
 #    Cpu mode     =  thumb
 #    Endian       =  little
 #    Source file  =  F:\K60_CAR_2018\project\programme\app\camera_test.c
 #    Command line =  
-#        -f C:\Users\19071_~1\AppData\Local\Temp\EW7D98.tmp
+#        -f C:\Users\19071_~1\AppData\Local\Temp\EWE774.tmp
 #        (F:\K60_CAR_2018\project\programme\app\camera_test.c -D LPLD_K60 -D
 #        USE_K60DZ10 -lCN F:\K60_CAR_2018\project\programme\iar\RAM\List -lB
 #        F:\K60_CAR_2018\project\programme\iar\RAM\List -o
@@ -47,141 +47,60 @@ F:\K60_CAR_2018\project\programme\app\camera_test.c
       2          //static uint8 Pix_Data[240][320];
       3          
       4          
-
-   \                                 In section .bss, align 4
-      5          UART_InitTypeDef uart0_init_struct;
-   \                     uart0_init_struct:
-   \   00000000                      DS8 28
-      6          
-      7          
-      8          
-      9          
-
-   \                                 In section .text, align 2, keep-with-next
-     10          void uart_init(void)
-     11          {
-   \                     uart_init: (+1)
-   \   00000000   0xB5E0             PUSH     {R5-R7,LR}
-     12            uart0_init_struct.UART_Uartx = UART0; //使用UART0
-   \   00000002   0x....             LDR.N    R0,??DataTable1  ;; 0x4006a000
-   \   00000004   0x....             LDR.N    R1,??DataTable1_1
-   \   00000006   0x6008             STR      R0,[R1, #+0]
-     13            uart0_init_struct.UART_BaudRate = 9600; //设置波特率9600
-   \   00000008   0xF44F 0x5016      MOV      R0,#+9600
-   \   0000000C   0x....             LDR.N    R1,??DataTable1_1
-   \   0000000E   0x6048             STR      R0,[R1, #+4]
-     14            uart0_init_struct.UART_RxPin = PTA15;  //接收引脚为PTE15
-   \   00000010   0x200F             MOVS     R0,#+15
-   \   00000012   0x....             LDR.N    R1,??DataTable1_1
-   \   00000014   0x7248             STRB     R0,[R1, #+9]
-     15            uart0_init_struct.UART_TxPin = PTA14;  //发送引脚为PTE14
-   \   00000016   0x200E             MOVS     R0,#+14
-   \   00000018   0x....             LDR.N    R1,??DataTable1_1
-   \   0000001A   0x7208             STRB     R0,[R1, #+8]
-     16            //初始化UART
-     17            LPLD_UART_Init(uart0_init_struct);
-   \   0000001C   0x....             LDR.N    R1,??DataTable1_1
-   \   0000001E   0xB084             SUB      SP,SP,#+16
-   \   00000020   0x4668             MOV      R0,SP
-   \   00000022   0x221C             MOVS     R2,#+28
-   \   00000024   0x.... 0x....      BL       __aeabi_memcpy4
-   \   00000028   0xBC0F             POP      {R0-R3}
-   \   0000002A   0x.... 0x....      BL       LPLD_UART_Init
-     18          }
-   \   0000002E   0xBD07             POP      {R0-R2,PC}       ;; return
+      5          //UART_InitTypeDef uart0_init_struct;
+      6          //
+      7          //
+      8          //
+      9          //
+     10          //void uart_init(void)
+     11          //{
+     12          //  uart0_init_struct.UART_Uartx = UART0; //使用UART0
+     13          //  uart0_init_struct.UART_BaudRate = 9600; //设置波特率9600
+     14          //  uart0_init_struct.UART_RxPin = PTA15;  //接收引脚为PTE15
+     15          //  uart0_init_struct.UART_TxPin = PTA14;  //发送引脚为PTE14
+     16          //  //初始化UART
+     17          //  LPLD_UART_Init(uart0_init_struct);
+     18          //}
      19          
 
    \                                 In section .text, align 2, keep-with-next
      20          extern void app__camera_test(void){
    \                     app__camera_test: (+1)
-   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000000   0xB580             PUSH     {R7,LR}
      21              
-     22              int i,j;
-     23              int tem;
+     22          //    int i,j;
+     23          //    int tem;
      24              
-     25              uart_init();
-   \   00000002   0x.... 0x....      BL       uart_init
+     25          //    uart_init();
      26              ov7620__config();
-   \   00000006   0x.... 0x....      BL       ov7620__config
-     27              //camera__take_a_photo_please_();
-     28             // camera__take_a_photo_please_();
-     29             // camera__take_a_photo_please_();
-     30              //camera__take_a_photo_please_();
-     31              //camera__take_a_photo_please_();
-     32              for(i=0;i<240;i++){
-   \   0000000A   0x2400             MOVS     R4,#+0
-   \   0000000C   0xE010             B.N      ??app__camera_test_0
-     33                for(j=0;j<320;j++){
-     34                 // if(Pix_Data[i][j]>128) tem=0;else tem=1;
-     35                  LPLD_UART_PutChar(UART0, Pix_Data[i][j]);
-   \                     ??app__camera_test_1: (+1)
-   \   0000000E   0x....             LDR.N    R0,??DataTable1_2
-   \   00000010   0xF44F 0x71A0      MOV      R1,#+320
-   \   00000014   0xFB01 0xF104      MUL      R1,R1,R4
-   \   00000018   0x4408             ADD      R0,R0,R1
-   \   0000001A   0x5740             LDRSB    R0,[R0, R5]
-   \   0000001C   0x0001             MOVS     R1,R0
-   \   0000001E   0xB249             SXTB     R1,R1            ;; SignExt  R1,R1,#+24,#+24
-   \   00000020   0x....             LDR.N    R0,??DataTable1  ;; 0x4006a000
-   \   00000022   0x.... 0x....      BL       LPLD_UART_PutChar
-     36                } 
-   \   00000026   0x1C6D             ADDS     R5,R5,#+1
-   \                     ??app__camera_test_2: (+1)
-   \   00000028   0xF5B5 0x7FA0      CMP      R5,#+320
-   \   0000002C   0xDBEF             BLT.N    ??app__camera_test_1
-   \   0000002E   0x1C64             ADDS     R4,R4,#+1
-   \                     ??app__camera_test_0: (+1)
-   \   00000030   0x2CF0             CMP      R4,#+240
-   \   00000032   0xDA01             BGE.N    ??app__camera_test_3
-   \   00000034   0x2500             MOVS     R5,#+0
-   \   00000036   0xE7F7             B.N      ??app__camera_test_2
-     37              }
-     38          }
-   \                     ??app__camera_test_3: (+1)
-   \   00000038   0xBD31             POP      {R0,R4,R5,PC}    ;; return
-
-   \                                 In section .text, align 4, keep-with-next
-   \                     ??DataTable1:
-   \   00000000   0x4006A000         DC32     0x4006a000
-
-   \                                 In section .text, align 4, keep-with-next
-   \                     ??DataTable1_1:
-   \   00000000   0x........         DC32     uart0_init_struct
-
-   \                                 In section .text, align 4, keep-with-next
-   \                     ??DataTable1_2:
-   \   00000000   0x........         DC32     Pix_Data
+   \   00000002   0x.... 0x....      BL       ov7620__config
+     27              
+     28          //    for(i=0;i<240;i++){
+     29          //      for(j=0;j<320;j++){
+     30          //        LPLD_UART_PutChar(UART0, Pix_Data[i][j]);
+     31          //      } 
+     32          //    }
+     33          }
+   \   00000006   0xBD01             POP      {R0,PC}          ;; return
 
    Maximum stack usage in bytes:
 
    .cstack Function
    ------- --------
-      16   app__camera_test
-        16   -> LPLD_UART_PutChar
-        16   -> ov7620__config
-        16   -> uart_init
-      32   uart_init
-        16   -> LPLD_UART_Init
-        32   -> __aeabi_memcpy4
+       8   app__camera_test
+         8   -> ov7620__config
 
 
    Section sizes:
 
    Bytes  Function/Label
    -----  --------------
-       4  ??DataTable1
-       4  ??DataTable1_1
-       4  ??DataTable1_2
-      58  app__camera_test
-      28  uart0_init_struct
-      48  uart_init
+       8  app__camera_test
 
  
-  28 bytes in section .bss
- 118 bytes in section .text
+ 8 bytes in section .text
  
- 118 bytes of CODE memory
-  28 bytes of DATA memory
+ 8 bytes of CODE memory
 
 Errors: none
-Warnings: 1
+Warnings: none

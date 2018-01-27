@@ -3723,6 +3723,9 @@
                 <name>$PROJ_DIR$\..\..\..\lib\peripheral\ov7620.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\..\..\..\lib\peripheral\ov7725.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\..\lib\peripheral\P_Drivers.h</name>
             </file>
             <file>

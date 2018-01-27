@@ -1,13 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      25/Jan/2018  20:32:00
+// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      27/Jan/2018  16:43:41
 // Copyright 1999-2017 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
 //    Endian       =  little
 //    Source file  =  F:\K60_CAR_2018\project\programme\app\servo_test.c
 //    Command line =  
-//        -f C:\Users\19071_~1\AppData\Local\Temp\EW2B50.tmp
+//        -f C:\Users\19071_~1\AppData\Local\Temp\EW479B.tmp
 //        (F:\K60_CAR_2018\project\programme\app\servo_test.c -D LPLD_K60 -D
 //        USE_K60DZ10 -lCN F:\K60_CAR_2018\project\programme\iar\RAM\List -lB
 //        F:\K60_CAR_2018\project\programme\iar\RAM\List -o
@@ -75,8 +75,8 @@ app__steer_dev:
 //   11     servo__config(&steer);
         LDR.N    R0,??app__steer_dev_0
         BL       servo__config
-//   12     servo__set_duty(625);
-        MOVW     R0,#+625
+//   12     servo__set_duty(820);
+        MOV      R0,#+820
         BL       servo__set_duty
 //   13     while(1)
 ??app__steer_dev_1:

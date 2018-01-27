@@ -9,7 +9,7 @@ static servo_t steer={
 extern void app__steer_dev(void)
 {
     servo__config(&steer);
-    servo__set_duty(625);
+    servo__set_duty(820);
     while(1)
     {    
     }

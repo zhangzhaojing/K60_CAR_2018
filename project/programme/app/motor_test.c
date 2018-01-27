@@ -13,7 +13,7 @@ extern void app__motor_dev(void){
     motor_control__config(&mtrctrl);
     motor_control__enable();
    
-    motor_control__set_duty(Left_Motor, (int32)(2000.0f));
-    motor_control__set_duty(Right_Motor, (int32)(-2000.0f));
+    motor_control__set_duty(Left_Motor, (int32)(1200.0f));
+    motor_control__set_duty(Right_Motor, (int32)(-1200.0f));
 
 }

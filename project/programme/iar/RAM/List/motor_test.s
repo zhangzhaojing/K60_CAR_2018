@@ -1,13 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      25/Jan/2018  20:31:59
+// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      27/Jan/2018  16:43:40
 // Copyright 1999-2017 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
 //    Endian       =  little
 //    Source file  =  F:\K60_CAR_2018\project\programme\app\motor_test.c
 //    Command line =  
-//        -f C:\Users\19071_~1\AppData\Local\Temp\EW287B.tmp
+//        -f C:\Users\19071_~1\AppData\Local\Temp\EW4513.tmp
 //        (F:\K60_CAR_2018\project\programme\app\motor_test.c -D LPLD_K60 -D
 //        USE_K60DZ10 -lCN F:\K60_CAR_2018\project\programme\iar\RAM\List -lB
 //        F:\K60_CAR_2018\project\programme\iar\RAM\List -o
@@ -93,12 +93,12 @@ app__motor_dev:
 //   14     motor_control__enable();
         BL       motor_control__enable
 //   15    
-//   16     motor_control__set_duty(Left_Motor, (int32)(2000.0f));
-        MOV      R1,#+2000
+//   16     motor_control__set_duty(Left_Motor, (int32)(1200.0f));
+        MOV      R1,#+1200
         MOVS     R0,#+0
         BL       motor_control__set_duty
-//   17     motor_control__set_duty(Right_Motor, (int32)(-2000.0f));
-        LDR.N    R1,??app__motor_dev_0+0x4  ;; 0xfffff830
+//   17     motor_control__set_duty(Right_Motor, (int32)(-1200.0f));
+        LDR.N    R1,??app__motor_dev_0+0x4  ;; 0xfffffb50
         MOVS     R0,#+1
         BL       motor_control__set_duty
 //   18 
@@ -107,7 +107,7 @@ app__motor_dev:
         DATA
 ??app__motor_dev_0:
         DC32     mtrctrl
-        DC32     0xfffff830
+        DC32     0xfffffb50
 
         SECTION `.iar_vfe_header`:DATA:NOALLOC:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0

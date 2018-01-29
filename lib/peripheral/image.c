@@ -24,7 +24,7 @@ void compressed__free(image_t * img){
     free(img->data);
 }
 
-void image__uncompress(compressed_t *com, image_t *img){
+void image__uncompress(compressed_t *com, image_t *img)
 {
 	uint16_t row, col, rstep, cstep;
 	
@@ -36,7 +36,8 @@ void image__uncompress(compressed_t *com, image_t *img){
 			img->data[row*img->ncols+col] = (compressed__idx(com, row*rstep, col*cstep)?0xff:0);
 }
 
-void image__compress(compressed_t *com, image_t * img){
+void image__compress(compressed_t *com, image_t * img)
+{
 	uint16_t row, col;
 	ASSERT(com->nrows == img->nrows && com->ncols && img->ncols);
 	for(row = 0; row < img->nrows; row++){

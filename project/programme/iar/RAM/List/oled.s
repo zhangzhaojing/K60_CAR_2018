@@ -1,13 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      25/Jan/2018  20:01:48
+// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      29/Jan/2018  14:27:48
 // Copyright 1999-2017 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
 //    Endian       =  little
 //    Source file  =  F:\K60_CAR_2018\lib\peripheral\oled.c
 //    Command line =  
-//        -f C:\Users\19071_~1\AppData\Local\Temp\EW808B.tmp
+//        -f C:\Users\19071_~1\AppData\Local\Temp\EW924D.tmp
 //        (F:\K60_CAR_2018\lib\peripheral\oled.c -D LPLD_K60 -D USE_K60DZ10
 //        -lCN F:\K60_CAR_2018\project\programme\iar\RAM\List -lB
 //        F:\K60_CAR_2018\project\programme\iar\RAM\List -o
@@ -465,7 +465,7 @@ write_cmd:
         STR      R0,[R1, #+0]
 //  139 }
         BX       LR               ;; return
-//  140 
+//  140 //…Ë÷√ƒ⁄»›ø™ ºŒª÷√ 128col 8page
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
@@ -510,7 +510,7 @@ move_cursor_to:
         STRB     R5,[R0, #+1]
 //  148 }
         POP      {R0,R4,R5,PC}    ;; return
-//  149 
+//  149 //margin£∫±ﬂøÚ
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
@@ -721,30 +721,31 @@ flush_buffer:
 ??flush_buffer_11:
         POP      {R0,R4-R9,PC}    ;; return
 //  176 
+//  177 //ÃÓ≥‰∆¡ƒª data 8Œª ˝æ›”√”⁄ÃÓ≥‰“ª“≥÷–µƒ“ª¡–
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//  177 static void fill_with(const oled_region_t * region, uint8 data){
+//  178 static void fill_with(const oled_region_t * region, uint8 data){
 fill_with:
         PUSH     {R3-R7,LR}
         MOVS     R4,R0
         MOVS     R5,R1
-//  178     uint8 page_end = region->page_start + region->page_size;
+//  179     uint8 page_end = region->page_start + region->page_size;
         LDRB     R6,[R4, #+0]
         LDRB     R0,[R4, #+2]
         ADDS     R6,R0,R6
-//  179     uint8 col_end = region->col_start + region->col_size;
+//  180     uint8 col_end = region->col_start + region->col_size;
         LDRB     R7,[R4, #+1]
         LDRB     R0,[R4, #+3]
         ADDS     R7,R0,R7
-//  180     for(oled->page = region->page_start;oled->page < page_end; oled->page++){
+//  181     for(oled->page = region->page_start;oled->page < page_end; oled->page++){
         LDRB     R0,[R4, #+0]
         LDR.W    R1,??DataTable7
         LDR      R1,[R1, #+0]
         STRB     R0,[R1, #+0]
         B.N      ??fill_with_0
-//  181         move_cursor_to(oled->page, region->col_start);
-//  182         while (oled->col < col_end) write_data(data, 0);
+//  182         move_cursor_to(oled->page, region->col_start);
+//  183         while (oled->col < col_end) write_data(data, 0);
 ??fill_with_1:
         MOVS     R1,#+0
         MOVS     R0,R5
@@ -779,21 +780,21 @@ fill_with:
         LDRB     R0,[R0, #+0]
         BL       move_cursor_to
         B.N      ??fill_with_2
-//  183     }
-//  184 }
+//  184     }
+//  185 }
 ??fill_with_3:
         POP      {R0,R4-R7,PC}    ;; return
-//  185 
+//  186 
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//  186 static void load_image(oled_region_t * region, image_region_t * imgroi){
+//  187 static void load_image(oled_region_t * region, image_region_t * imgroi){
 load_image:
         PUSH     {R4-R8,LR}
         MOVS     R2,R0
-//  187     uint8 page, col, i;
-//  188 
-//  189     for(page = 0; page < region->page_size; page++){
+//  188     uint8 page, col, i;
+//  189 
+//  190     for(page = 0; page < region->page_size; page++){
         MOVS     R3,#+0
         B.N      ??load_image_0
 ??load_image_1:
@@ -804,7 +805,7 @@ load_image:
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         CMP      R0,R4
         BCS.N    ??load_image_2
-//  190         for(col = 0; col < region->col_size; col++){
+//  191         for(col = 0; col < region->col_size; col++){
         MOVS     R4,#+0
         B.N      ??load_image_3
 ??load_image_4:
@@ -815,7 +816,7 @@ load_image:
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         CMP      R0,R5
         BCS.N    ??load_image_1
-//  191             region_idx(region, page, col) = 0;
+//  192             region_idx(region, page, col) = 0;//«Â¡„
         LDR.N    R0,??DataTable7
         LDR      R5,[R0, #+0]
         LDRB     R0,[R2, #+0]
@@ -828,13 +829,13 @@ load_image:
         ADD      R0,R5,R0
         MOVS     R5,#+0
         STRB     R5,[R0, #+2]
-//  192             for(i=0; i<8; i++){
+//  193             for(i=0; i<8; i++){
         MOVS     R5,#+0
 ??load_image_5:
         UXTB     R5,R5            ;; ZeroExt  R5,R5,#+24,#+24
         CMP      R5,#+8
         BGE.N    ??load_image_4
-//  193                 if(page*8+i < imgroi->row_size && col < imgroi->col_size){
+//  194                 if(page*8+i < imgroi->row_size && col < imgroi->col_size){
         UXTB     R3,R3            ;; ZeroExt  R3,R3,#+24,#+24
         UXTB     R5,R5            ;; ZeroExt  R5,R5,#+24,#+24
         ADDS     R0,R5,R3, LSL #+3
@@ -847,11 +848,9 @@ load_image:
         SXTH     R0,R0            ;; SignExt  R0,R0,#+16,#+16
         CMP      R0,R6
         BGE.N    ??load_image_6
-//  194                     region_idx(region, page, col) |= (imgroi__idx(imgroi, page*8+i, col) ? (0x01<<i):(0));
-        LDR      R0,[R1, #+8]
-        LDR      R6,[R0, #+4]
-        LDR      R0,[R1, #+8]
-        LDRSH    R7,[R0, #+2]
+//  195                     region_idx(region, page, col) |= ((imgroi)->data[(imgroi)->ncols * ((imgroi)->row_start + page*8+i) + (imgroi)->col_start + col]) ? (0x01<<i):(0);
+        LDR      R6,[R1, #+12]
+        LDRSH    R7,[R1, #+10]
         LDRSH    R0,[R1, #+0]
         UXTB     R3,R3            ;; ZeroExt  R3,R3,#+24,#+24
         LSLS     R12,R3,#+3
@@ -893,51 +892,51 @@ load_image:
         LDRB     R0,[R0, #+2]
         ORRS     R6,R6,R0
         STRB     R6,[R7, #+2]
-//  195                 }
-//  196             }
+//  196                 }
+//  197             }
 ??load_image_6:
         ADDS     R5,R5,#+1
         B.N      ??load_image_5
-//  197         }
-//  198     }
-//  199 }
+//  198         }
+//  199     }
+//  200 }
 ??load_image_2:
         POP      {R4-R8,PC}       ;; return
-//  200 
+//  201 
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//  201 static void load_text(oled_region_t * region, char * text){
+//  202 static void load_text(oled_region_t * region, char * text){
 load_text:
         PUSH     {R3-R9,LR}
         MOVS     R4,R0
         MOVS     R5,R1
-//  202     uint8 * textend = text + strlen(text);
+//  203     uint8 * textend = text + strlen(text);
         MOVS     R0,R5
         BL       strlen
         ADD      R1,R5,R0
-//  203     uint8 col_size = region->col_size /6 * 6;
+//  204     uint8 col_size = region->col_size /6 * 6;
         LDRB     R0,[R4, #+3]
         MOVS     R2,#+6
         SDIV     R2,R0,R2
         MOVS     R0,#+6
         MULS     R2,R0,R2
-//  204     uint8 page, col, i, ch;
-//  205     for(page = 0; page < region->page_size; page++){
+//  205     uint8 page, col, i, ch;
+//  206     for(page = 0; page < region->page_size; page++){
         MOVS     R3,#+0
         B.N      ??load_text_0
-//  206         for(col = 0; col < col_size; ){
-//  207             if(text < textend){
-//  208                 ch = *text++ - 32;
-//  209                 for(i=0;i<6;i++){
-//  210                     region_idx(region, page, col++) = F6x8[ch][i];
-//  211                 }
-//  212             }else{
-//  213                 region_idx(region, page, col++) = 0;
-//  214             }
-//  215         }
-//  216         for(;col < region->col_size;)
-//  217             region_idx(region, page, col++) = 0;
+//  207         for(col = 0; col < col_size; ){
+//  208             if(text < textend){
+//  209                 ch = *text++ - 32;
+//  210                 for(i=0;i<6;i++){
+//  211                     region_idx(region, page, col++) = F6x8[ch][i];
+//  212                 }
+//  213             }else{
+//  214                 region_idx(region, page, col++) = 0;
+//  215             }
+//  216         }
+//  217         for(;col < region->col_size;)
+//  218             region_idx(region, page, col++) = 0;
 ??load_text_1:
         LDR.N    R0,??DataTable7
         LDR      R7,[R0, #+0]
@@ -1019,85 +1018,85 @@ load_text:
         ADDS     R6,R6,#+1
         ADDS     R12,R12,#+1
         B.N      ??load_text_6
-//  218     }
-//  219 }
+//  219     }
+//  220 }
 ??load_text_3:
         POP      {R0,R4-R9,PC}    ;; return
-//  220 
+//  221 
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//  221 void OLED__show_img(oled_region_t * region, image_region_t * imgroi, boolean show_margin, boolean flip){
+//  222 void OLED__show_img(oled_region_t * region, image_region_t * imgroi, boolean show_margin, boolean flip){
 OLED__show_img:
         PUSH     {R4-R6,LR}
         MOVS     R4,R0
         MOVS     R5,R2
         MOVS     R6,R3
-//  222     load_image(region, imgroi);
+//  223     load_image(region, imgroi);
         MOVS     R0,R4
         BL       load_image
-//  223     flush_buffer(region, show_margin, flip);
+//  224     flush_buffer(region, show_margin, flip);
         MOVS     R2,R6
         UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
         MOVS     R1,R5
         UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
         MOVS     R0,R4
         BL       flush_buffer
-//  224 }
+//  225 }
         POP      {R4-R6,PC}       ;; return
-//  225 
+//  226 
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//  226 void OLED__show_text(oled_region_t * region, char * text, boolean show_margin, boolean flip){
+//  227 void OLED__show_text(oled_region_t * region, char * text, boolean show_margin, boolean flip){
 OLED__show_text:
         PUSH     {R4-R6,LR}
         MOVS     R4,R0
         MOVS     R5,R2
         MOVS     R6,R3
-//  227     load_text(region, text);
+//  228     load_text(region, text);
         MOVS     R0,R4
         BL       load_text
-//  228     flush_buffer(region, show_margin, flip);
+//  229     flush_buffer(region, show_margin, flip);
         MOVS     R2,R6
         UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
         MOVS     R1,R5
         UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
         MOVS     R0,R4
         BL       flush_buffer
-//  229 }
+//  230 }
         POP      {R4-R6,PC}       ;; return
-//  230 
+//  231 
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//  231 void OLED__init(oled_cfg_t * oc_usr, oled_t * oled_usr){
+//  232 void OLED__init(oled_cfg_t * oc_usr, oled_t * oled_usr){
 OLED__init:
         PUSH     {R4,R5,LR}
         SUB      SP,SP,#+28
-//  232     GPIO_InitTypeDef init_gpio;
-//  233     gpio_cfg_t * iostart, * ioend;
-//  234     const uint8 oclen = sizeof(oled_cfg_t)/sizeof(gpio_cfg_t);
+//  233     GPIO_InitTypeDef init_gpio;
+//  234     gpio_cfg_t * iostart, * ioend;
+//  235     const uint8 oclen = sizeof(oled_cfg_t)/sizeof(gpio_cfg_t);
         MOVS     R2,#+5
-//  235     
-//  236     oc = oc_usr;
+//  236     
+//  237     oc = oc_usr;
         LDR.N    R3,??DataTable7_2
         STR      R0,[R3, #+0]
-//  237     oled = oled_usr;
+//  238     oled = oled_usr;
         LDR.N    R0,??DataTable7
         STR      R1,[R0, #+0]
-//  238 
-//  239     // ÂàùÂßãÂåñ OLED ÂºïËÑö
-//  240     init_gpio.GPIO_Dir = DIR_OUTPUT;
+//  239 
+//  240     // ÂàùÂßãÂå?OLED ÂºïËÑö
+//  241     init_gpio.GPIO_Dir = DIR_OUTPUT;
         MOVS     R0,#+1
         STRB     R0,[SP, #+16]
-//  241     init_gpio.GPIO_Output = OUTPUT_H;
+//  242     init_gpio.GPIO_Output = OUTPUT_H;
         MOVS     R0,#+1
         STRB     R0,[SP, #+17]
-//  242     init_gpio.GPIO_PinControl = IRQC_DIS;
+//  243     init_gpio.GPIO_PinControl = IRQC_DIS;
         MOVS     R0,#+0
         STR      R0,[SP, #+12]
-//  243     for(iostart = (gpio_cfg_t*)oc, ioend = iostart + oclen; iostart!=ioend; iostart++){
+//  244     for(iostart = (gpio_cfg_t*)oc, ioend = iostart + oclen; iostart!=ioend; iostart++){
         LDR.N    R0,??DataTable7_2
         LDR      R4,[R0, #+0]
         UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
@@ -1105,14 +1104,14 @@ OLED__init:
         MULS     R2,R0,R2
         ADD      R5,R4,R2
         B.N      ??OLED__init_0
-//  244         init_gpio.GPIO_PTx = iostart->PTx;
+//  245         init_gpio.GPIO_PTx = iostart->PTx;
 ??OLED__init_1:
         LDR      R0,[R4, #+0]
         STR      R0,[SP, #+4]
-//  245         init_gpio.GPIO_Pins = iostart->GPIO_Pinn;
+//  246         init_gpio.GPIO_Pins = iostart->GPIO_Pinn;
         LDR      R0,[R4, #+4]
         STR      R0,[SP, #+8]
-//  246         LPLD_GPIO_Init(init_gpio);
+//  247         LPLD_GPIO_Init(init_gpio);
         ADD      R1,SP,#+4
         SUB      SP,SP,#+16
         MOV      R0,SP
@@ -1120,14 +1119,14 @@ OLED__init:
         BL       __aeabi_memcpy4
         POP      {R0-R3}
         BL       LPLD_GPIO_Init
-//  247     }
+//  248     }
         ADDS     R4,R4,#+12
 ??OLED__init_0:
         CMP      R4,R5
         BNE.N    ??OLED__init_1
-//  248 
-//  249     // ÈáçÁΩÆ OLED ÂèÇÊï∞
-//  250     OLED_SCL=1;
+//  249 
+//  250     // ÈáçÁΩÆ OLED ÂèÇÊï∞
+//  251     OLED_SCL=1;
         LDR.N    R0,??DataTable7_2
         LDR      R0,[R0, #+0]
         LDR      R0,[R0, #+0]
@@ -1139,7 +1138,7 @@ OLED__init:
         ADDS     R1,R1,#+1107296256
         MOVS     R0,#+1
         STR      R0,[R1, #+0]
-//  251     OLED_CS=0;
+//  252     OLED_CS=0;
         LDR.N    R0,??DataTable7_2
         LDR      R0,[R0, #+0]
         LDR      R0,[R0, #+48]
@@ -1151,7 +1150,7 @@ OLED__init:
         ADDS     R1,R1,#+1107296256
         MOVS     R0,#+0
         STR      R0,[R1, #+0]
-//  252     OLED_RST=0;
+//  253     OLED_RST=0;
         LDR.N    R0,??DataTable7_2
         LDR      R0,[R0, #+0]
         LDR      R0,[R0, #+24]
@@ -1163,10 +1162,10 @@ OLED__init:
         ADDS     R1,R1,#+1107296256
         MOVS     R0,#+0
         STR      R0,[R1, #+0]
-//  253     dummy_delay_ms(50);
+//  254     dummy_delay_ms(50);
         MOVS     R0,#+50
         BL       dummy_delay_ms
-//  254     OLED_RST=1;
+//  255     OLED_RST=1;
         LDR.N    R0,??DataTable7_2
         LDR      R0,[R0, #+0]
         LDR      R0,[R0, #+24]
@@ -1178,98 +1177,98 @@ OLED__init:
         ADDS     R1,R1,#+1107296256
         MOVS     R0,#+1
         STR      R0,[R1, #+0]
-//  255 
-//  256     write_cmd(0xae);//--turn off oled panel
+//  256 
+//  257     write_cmd(0xae);//--turn off oled panel
         MOVS     R0,#+174
         BL       write_cmd
-//  257     write_cmd(0x00);//--set low column address
+//  258     write_cmd(0x00);//--set low column address
         MOVS     R0,#+0
         BL       write_cmd
-//  258     write_cmd(0x10);//--set high column address
+//  259     write_cmd(0x10);//--set high column address
         MOVS     R0,#+16
         BL       write_cmd
-//  259     write_cmd(0x40);//--set start line address  Set Mapping RAM Display Start Line (0x00~0x3F)
+//  260     write_cmd(0x40);//--set start line address  Set Mapping RAM Display Start Line (0x00~0x3F)
         MOVS     R0,#+64
         BL       write_cmd
-//  260     write_cmd(0x81);//--set contrast control register
+//  261     write_cmd(0x81);//--set contrast control register
         MOVS     R0,#+129
         BL       write_cmd
-//  261     write_cmd(0xcf);//--Set SEG Output Current Brightness
+//  262     write_cmd(0xcf);//--Set SEG Output Current Brightness
         MOVS     R0,#+207
         BL       write_cmd
-//  262     write_cmd(0xa1);//--Set SEG/Column Mapping     0xa0Â∑¶Âè≥ÂèçÁΩÆ 0xa1Ê≠£Â∏∏
+//  263     write_cmd(0xa1);//--Set SEG/Column Mapping     0xa0Â∑¶Âè≥ÂèçÁΩÆ 0xa1Ê≠£Â∏∏
         MOVS     R0,#+161
         BL       write_cmd
-//  263     write_cmd(0xc8);//--Set COM/Row Scan Direction   0xc0‰∏ä‰∏ãÂèçÁΩÆ 0xc8Ê≠£Â∏∏
+//  264     write_cmd(0xc8);//--Set COM/Row Scan Direction   0xc0‰∏ä‰∏ãÂèçÁΩÆ 0xc8Ê≠£Â∏∏
         MOVS     R0,#+200
         BL       write_cmd
-//  264     write_cmd(0xa6);//--set normal display
+//  265     write_cmd(0xa6);//--set normal display
         MOVS     R0,#+166
         BL       write_cmd
-//  265     write_cmd(0xa8);//--set multiplex ratio(1 to 64)
+//  266     write_cmd(0xa8);//--set multiplex ratio(1 to 64)
         MOVS     R0,#+168
         BL       write_cmd
-//  266     write_cmd(0x3f);//--1/64 duty
+//  267     write_cmd(0x3f);//--1/64 duty
         MOVS     R0,#+63
         BL       write_cmd
-//  267     write_cmd(0xd3);//--set display offset  Shift Mapping RAM Counter (0x00~0x3F)
+//  268     write_cmd(0xd3);//--set display offset  Shift Mapping RAM Counter (0x00~0x3F)
         MOVS     R0,#+211
         BL       write_cmd
-//  268     write_cmd(0x00);//--not offset
+//  269     write_cmd(0x00);//--not offset
         MOVS     R0,#+0
         BL       write_cmd
-//  269     write_cmd(0xd5);//--set display clock divide ratio/oscillator frequency
+//  270     write_cmd(0xd5);//--set display clock divide ratio/oscillator frequency
         MOVS     R0,#+213
         BL       write_cmd
-//  270     write_cmd(0x80);//--set divide ratio, Set Clock as 100 Frames/Sec
+//  271     write_cmd(0x80);//--set divide ratio, Set Clock as 100 Frames/Sec
         MOVS     R0,#+128
         BL       write_cmd
-//  271     write_cmd(0xd9);//--set pre-charge period
+//  272     write_cmd(0xd9);//--set pre-charge period
         MOVS     R0,#+217
         BL       write_cmd
-//  272     write_cmd(0xf1);//Set Pre-Charge as 15 Clocks & Discharge as 1 Clock
+//  273     write_cmd(0xf1);//Set Pre-Charge as 15 Clocks & Discharge as 1 Clock
         MOVS     R0,#+241
         BL       write_cmd
-//  273     write_cmd(0xda);//--set com pins hardware configuration
+//  274     write_cmd(0xda);//--set com pins hardware configuration
         MOVS     R0,#+218
         BL       write_cmd
-//  274     write_cmd(0x12);
+//  275     write_cmd(0x12);
         MOVS     R0,#+18
         BL       write_cmd
-//  275     write_cmd(0xdb);//--set vcomh
+//  276     write_cmd(0xdb);//--set vcomh
         MOVS     R0,#+219
         BL       write_cmd
-//  276     write_cmd(0x40);//Set VCOM Deselect Level
+//  277     write_cmd(0x40);//Set VCOM Deselect Level
         MOVS     R0,#+64
         BL       write_cmd
-//  277     write_cmd(0x20);//-Set Page Addressing Mode (0x00/0x01/0x02)
+//  278     write_cmd(0x20);//-Set Page Addressing Mode (0x00/0x01/0x02)
         MOVS     R0,#+32
         BL       write_cmd
-//  278     write_cmd(0x02);//
+//  279     write_cmd(0x02);//
         MOVS     R0,#+2
         BL       write_cmd
-//  279     write_cmd(0x8d);//--set Charge Pump enable/disable
+//  280     write_cmd(0x8d);//--set Charge Pump enable/disable
         MOVS     R0,#+141
         BL       write_cmd
-//  280     write_cmd(0x14);//--set(0x10) disable
+//  281     write_cmd(0x14);//--set(0x10) disable
         MOVS     R0,#+20
         BL       write_cmd
-//  281     write_cmd(0xa4);// Disable Entire Display On (0xa4/0xa5)
+//  282     write_cmd(0xa4);// Disable Entire Display On (0xa4/0xa5)
         MOVS     R0,#+164
         BL       write_cmd
-//  282     write_cmd(0xa6);// Disable Inverse Display On (0xa6/a7)
+//  283     write_cmd(0xa6);// Disable Inverse Display On (0xa6/a7)
         MOVS     R0,#+166
         BL       write_cmd
-//  283     write_cmd(0xaf);//--turn on oled panel
+//  284     write_cmd(0xaf);//--turn on oled panel
         MOVS     R0,#+175
         BL       write_cmd
-//  284 
-//  285     // ÂàùÂßãÊ∏ÖÂ±è
-//  286     fill_with(&OLED_FULLSCREEN, 0x00);
+//  285 
+//  286     // ÂàùÂßãÊ∏ÖÂ±è
+//  287     fill_with(&OLED_FULLSCREEN, 0x00);
         MOVS     R1,#+0
         LDR.N    R0,??DataTable7_4
         BL       fill_with
-//  287 }
+//  288 }
         ADD      SP,SP,#+28
         POP      {R4,R5,PC}       ;; return
 
@@ -1312,9 +1311,9 @@ OLED__init:
 // 
 //     8 bytes in section .bss
 //   596 bytes in section .rodata
-// 2 036 bytes in section .text
+// 2 032 bytes in section .text
 // 
-// 2 036 bytes of CODE  memory
+// 2 032 bytes of CODE  memory
 //   596 bytes of CONST memory
 //     8 bytes of DATA  memory
 //

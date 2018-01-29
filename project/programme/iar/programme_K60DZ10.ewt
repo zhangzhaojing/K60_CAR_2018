@@ -3484,6 +3484,9 @@
             <name>$PROJ_DIR$\..\app\motor_test.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\app\oled_test.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\app\program.c</name>
         </file>
         <file>
@@ -3711,10 +3714,22 @@
         <group>
             <name>peripheral</name>
             <file>
+                <name>$PROJ_DIR$\..\..\..\lib\peripheral\image.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\lib\peripheral\image.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\..\lib\peripheral\motor.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\lib\peripheral\motor.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\lib\peripheral\oled.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\lib\peripheral\oled.h</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\lib\peripheral\ov7620.c</name>

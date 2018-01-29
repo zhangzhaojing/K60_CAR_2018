@@ -6,8 +6,13 @@
 #include "usrlib.h"
 #include "wrapper.h"
 #include "ov7620.h"
-#include "image.h"
+
 #include "ov7725.h"
+#include "image.h"
+#include "oled.h"
+
+
+
 
 
 #endif

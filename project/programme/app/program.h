@@ -10,6 +10,6 @@ extern void app__blind(void);
 extern void app__camera_test(void);
 
 
-extern void app__camera_dev(void);
+extern void app__oled_dev(void);
 
 #endif

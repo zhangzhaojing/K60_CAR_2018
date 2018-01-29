@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR ELF Linker V8.10.1.12857/W32 for ARM                27/Jan/2018  17:00:31
+# IAR ELF Linker V8.10.1.12857/W32 for ARM                29/Jan/2018  14:38:06
 # Copyright 2007-2017 IAR Systems AB.
 #
 #    Output file  =  
@@ -8,7 +8,7 @@
 #    Map file     =  
 #        F:\K60_CAR_2018\project\programme\iar\RAM\List\programme_K60DZ10.map
 #    Command line =  
-#        -f C:\Users\19071_~1\AppData\Local\Temp\EWB326.tmp
+#        -f C:\Users\19071_~1\AppData\Local\Temp\EW2A8.tmp
 #        (F:\K60_CAR_2018\project\programme\iar\RAM\Obj\alloc.o
 #        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\assert.o
 #        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\blind.o
@@ -37,9 +37,12 @@
 #        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\HW_UART.o
 #        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\HW_USB.o
 #        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\HW_WDOG.o
+#        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\image.o
 #        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\io.o
 #        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\motor.o
 #        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\motor_test.o
+#        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\oled.o
+#        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\oled_test.o
 #        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\ov7620.o
 #        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\printf.o
 #        F:\K60_CAR_2018\project\programme\iar\RAM\Obj\program.o
@@ -108,7 +111,7 @@ initialize manually with packing = copy, complex ranges { section .textrw };
   .noinit              ro code  0x00000420      0x4  startup_K60DZ10.o [1]
                               - 0x00000424     0x14
 
-"P1", part 2 of 2:                           0x2d48
+"P1", part 2 of 2:                           0x2d4c
   .text                ro code  0x00000424    0x71c  HW_UART.o [1]
   .text                ro code  0x00000b40    0x618  system_MK60.o [1]
   .text                ro code  0x00001158     0xa0  relocate.o [1]
@@ -160,58 +163,59 @@ initialize manually with packing = copy, complex ranges { section .textrw };
   .text                ro code  0x00002e60     0x1c  HW_ADC.o [1]
   .text                ro code  0x00002e7c     0x1a  cmain.o [5]
   .text                ro code  0x00002e96      0x4  low_level_init.o [3]
-  .text                ro code  0x00002e9a      0x8  program.o [1]
-  .text                ro code  0x00002ea2      0x4  exit.o [3]
-  .text                ro code  0x00002ea6      0x8  camera_test.o [1]
-  .text                ro code  0x00002eb0      0xa  cexit.o [5]
-  .text                ro code  0x00002ebc     0x14  exit.o [6]
-  .rodata              const    0x00002ed0     0x18  system_MK60.o [1]
-  .rodata              const    0x00002ee8     0x18  system_MK60.o [1]
-  .rodata              const    0x00002f00     0x18  system_MK60.o [1]
-  .rodata              const    0x00002f18     0x18  system_MK60.o [1]
-  .rodata              const    0x00002f30     0x18  system_MK60.o [1]
-  .rodata              const    0x00002f48     0x18  system_MK60.o [1]
-  .rodata              const    0x00002f60     0x18  system_MK60.o [1]
-  .rodata              const    0x00002f78     0x18  system_MK60.o [1]
-  .rodata              const    0x00002f90     0x18  system_MK60.o [1]
-  .rodata              const    0x00002fa8     0x18  system_MK60.o [1]
-  .rodata              const    0x00002fc0     0x14  system_MK60.o [1]
-  .rodata              const    0x00002fd4     0x14  system_MK60.o [1]
-  .rodata              const    0x00002fe8     0x14  system_MK60.o [1]
-  .rodata              const    0x00002ffc     0x14  system_MK60.o [1]
-  .rodata              const    0x00003010     0x14  system_MK60.o [1]
-  .rodata              const    0x00003024     0x14  system_MK60.o [1]
-  .text                ro code  0x00003038     0x14  io.o [1]
-  .data_init                    0x0000304c     0x14  <Block>
-    Initializer bytes  const    0x0000304c     0x14  <for .data-1>
-  .rodata              const    0x00003060     0x10  system_MK60.o [1]
-  .rodata              const    0x00003070     0x10  system_MK60.o [1]
-  .rodata              const    0x00003080     0x10  system_MK60.o [1]
-  .text                ro code  0x00003090     0x10  HW_SYSTICK.o [1]
-  .text                ro code  0x000030a0     0x10  HW_USB.o [1]
-  .rodata              const    0x000030b0      0xc  system_MK60.o [1]
-  .rodata              const    0x000030bc      0xc  system_MK60.o [1]
-  .text                ro code  0x000030c8      0xc  cstartup_M.o [5]
-  .rodata              const    0x000030d4      0x8  system_MK60.o [1]
-  .rodata              const    0x000030dc      0x8  system_MK60.o [1]
-  .rodata              const    0x000030e4      0x8  system_MK60.o [1]
-  .rodata              const    0x000030ec      0x8  system_MK60.o [1]
-  .rodata              const    0x000030f4      0x8  system_MK60.o [1]
-  .rodata              const    0x000030fc      0x8  system_MK60.o [1]
-  .rodata              const    0x00003104      0x8  system_MK60.o [1]
-  .rodata              const    0x0000310c      0x8  system_MK60.o [1]
-  .rodata              const    0x00003114      0x8  system_MK60.o [1]
-  .rodata              const    0x0000311c      0x8  system_MK60.o [1]
-  .rodata              const    0x00003124      0x8  system_MK60.o [1]
-  .rodata              const    0x0000312c      0x8  system_MK60.o [1]
-  .rodata              const    0x00003134      0x8  system_MK60.o [1]
-  .rodata              const    0x0000313c      0x8  system_MK60.o [1]
-  .rodata              const    0x00003144      0x8  system_MK60.o [1]
-  .rodata              const    0x0000314c      0x8  system_MK60.o [1]
-  .rodata              const    0x00003154      0x8  system_MK60.o [1]
-  .rodata              const    0x0000315c      0x8  system_MK60.o [1]
-  .rodata              const    0x00003164      0x8  system_MK60.o [1]
-                              - 0x0000316c   0x2d48
+  .text                ro code  0x00002e9a      0xc  program.o [1]
+  .text                ro code  0x00002ea6      0x4  exit.o [3]
+  .text                ro code  0x00002eaa      0x8  camera_test.o [1]
+  .text                ro code  0x00002eb2      0x2  oled_test.o [1]
+  .text                ro code  0x00002eb4      0xa  cexit.o [5]
+  .text                ro code  0x00002ec0     0x14  exit.o [6]
+  .rodata              const    0x00002ed4     0x18  system_MK60.o [1]
+  .rodata              const    0x00002eec     0x18  system_MK60.o [1]
+  .rodata              const    0x00002f04     0x18  system_MK60.o [1]
+  .rodata              const    0x00002f1c     0x18  system_MK60.o [1]
+  .rodata              const    0x00002f34     0x18  system_MK60.o [1]
+  .rodata              const    0x00002f4c     0x18  system_MK60.o [1]
+  .rodata              const    0x00002f64     0x18  system_MK60.o [1]
+  .rodata              const    0x00002f7c     0x18  system_MK60.o [1]
+  .rodata              const    0x00002f94     0x18  system_MK60.o [1]
+  .rodata              const    0x00002fac     0x18  system_MK60.o [1]
+  .rodata              const    0x00002fc4     0x14  system_MK60.o [1]
+  .rodata              const    0x00002fd8     0x14  system_MK60.o [1]
+  .rodata              const    0x00002fec     0x14  system_MK60.o [1]
+  .rodata              const    0x00003000     0x14  system_MK60.o [1]
+  .rodata              const    0x00003014     0x14  system_MK60.o [1]
+  .rodata              const    0x00003028     0x14  system_MK60.o [1]
+  .text                ro code  0x0000303c     0x14  io.o [1]
+  .data_init                    0x00003050     0x14  <Block>
+    Initializer bytes  const    0x00003050     0x14  <for .data-1>
+  .rodata              const    0x00003064     0x10  system_MK60.o [1]
+  .rodata              const    0x00003074     0x10  system_MK60.o [1]
+  .rodata              const    0x00003084     0x10  system_MK60.o [1]
+  .text                ro code  0x00003094     0x10  HW_SYSTICK.o [1]
+  .text                ro code  0x000030a4     0x10  HW_USB.o [1]
+  .rodata              const    0x000030b4      0xc  system_MK60.o [1]
+  .rodata              const    0x000030c0      0xc  system_MK60.o [1]
+  .text                ro code  0x000030cc      0xc  cstartup_M.o [5]
+  .rodata              const    0x000030d8      0x8  system_MK60.o [1]
+  .rodata              const    0x000030e0      0x8  system_MK60.o [1]
+  .rodata              const    0x000030e8      0x8  system_MK60.o [1]
+  .rodata              const    0x000030f0      0x8  system_MK60.o [1]
+  .rodata              const    0x000030f8      0x8  system_MK60.o [1]
+  .rodata              const    0x00003100      0x8  system_MK60.o [1]
+  .rodata              const    0x00003108      0x8  system_MK60.o [1]
+  .rodata              const    0x00003110      0x8  system_MK60.o [1]
+  .rodata              const    0x00003118      0x8  system_MK60.o [1]
+  .rodata              const    0x00003120      0x8  system_MK60.o [1]
+  .rodata              const    0x00003128      0x8  system_MK60.o [1]
+  .rodata              const    0x00003130      0x8  system_MK60.o [1]
+  .rodata              const    0x00003138      0x8  system_MK60.o [1]
+  .rodata              const    0x00003140      0x8  system_MK60.o [1]
+  .rodata              const    0x00003148      0x8  system_MK60.o [1]
+  .rodata              const    0x00003150      0x8  system_MK60.o [1]
+  .rodata              const    0x00003158      0x8  system_MK60.o [1]
+  .rodata              const    0x00003160      0x8  system_MK60.o [1]
+  .rodata              const    0x00003168      0x8  system_MK60.o [1]
+                              - 0x00003170   0x2d4c
 
 "P2", part 1 of 3:                             0x60
   CodeRelocateRam               0x1fff0410     0x4c  <Block>
@@ -226,8 +230,8 @@ initialize manually with packing = copy, complex ranges { section .textrw };
       .data            inited   0x1fff046c      0x4  system_MK60.o [1]
                               - 0x1fff0470     0x60
 
-"P2", part 2 of 3:                          0x12f08
-  .bss                          0x1fff0470  0x12f08  <Block>
+"P2", part 2 of 3:                          0x12ef8
+  .bss                          0x1fff0470  0x12ef8  <Block>
     .bss               zero     0x1fff0470      0x8  HW_ADC.o [1]
     .bss               zero     0x1fff0478    0x100  HW_CAN.o [1]
     .bss               zero     0x1fff0578     0x40  HW_CAN.o [1]
@@ -258,15 +262,15 @@ initialize manually with packing = copy, complex ranges { section .textrw };
     .bss               zero     0x1fff0740      0x4  ov7620.o [1]
     .bss               zero     0x1fff0744      0x4  ov7620.o [1]
     .bss               zero     0x1fff0748  0x12c00  ov7620.o [1]
-    .bss               zero     0x20003348     0x2c  ov7620.o [1]
-    .bss               zero     0x20003374      0x1  ov7620.o [1]
-    .bss               zero     0x20003375      0x1  ov7620.o [1]
-                              - 0x20003378  0x12f08
+    .bss               zero     0x20003348     0x1c  ov7620.o [1]
+    .bss               zero     0x20003364      0x1  ov7620.o [1]
+    .bss               zero     0x20003365      0x1  ov7620.o [1]
+                              - 0x20003368  0x12ef8
 
 "P2", part 3 of 3:                           0x1000
-  CSTACK                        0x20003378   0x1000  <Block>
-    CSTACK             uninit   0x20003378   0x1000  <Block tail>
-                              - 0x20004378   0x1000
+  CSTACK                        0x20003368   0x1000  <Block>
+    CSTACK             uninit   0x20003368   0x1000  <Block tail>
+                              - 0x20004368   0x1000
 
 
 *******************************************************************************
@@ -276,8 +280,8 @@ initialize manually with packing = copy, complex ranges { section .textrw };
           Address     Size
           -------     ----
 Zero (__iar_zero_init3)
-    1 destination range, total size 0x12f06:
-          0x1fff0470  0x12f06
+    1 destination range, total size 0x12ef6:
+          0x1fff0470  0x12ef6
 
 
 
@@ -309,15 +313,16 @@ F:\K60_CAR_2018\project\programme\iar\RAM\Obj: [1]
     assert.o                20                48
     camera_test.o            8
     io.o                    20
-    ov7620.o               792                     76 862
+    oled_test.o              2
+    ov7620.o               792                     76 846
     printf.o             1 240
-    program.o                8
+    program.o               12
     relocate.o             160
     startup_K60DZ10.o    1 044
     stdlib.o                28
     system_MK60.o        1 560             1 216        4
     -----------------------------------------------------
-    Total:              10 794       76    1 436   77 594
+    Total:              10 800       76    1 436   77 578
 
 command line: [2]
     -----------------------------------------------------
@@ -350,10 +355,10 @@ shb_l.a: [6]
     -----------------------------------------------------
     Total:                  20
 
-    Gaps                    12
+    Gaps                    10
     Linker created           8                16    4 096
 ---------------------------------------------------------
-    Grand Total:        11 184       76    1 452   81 690
+    Grand Total:        11 188       76    1 452   81 674
 
 
 *******************************************************************************
@@ -363,11 +368,11 @@ shb_l.a: [6]
 Entry                      Address     Size  Type      Object
 -----                      -------     ----  ----      ------
 .bss$$Base              0x1fff0470            --   Gb  - Linker created -
-.bss$$Limit             0x20003378            --   Gb  - Linker created -
+.bss$$Limit             0x20003368            --   Gb  - Linker created -
 .data$$Base             0x1fff045c            --   Gb  - Linker created -
 .data$$Limit            0x1fff0470            --   Gb  - Linker created -
-.data_init$$Base        0x0000304c            --   Gb  - Linker created -
-.data_init$$Limit       0x00003060            --   Gb  - Linker created -
+.data_init$$Base        0x00003050            --   Gb  - Linker created -
+.data_init$$Limit       0x00003064            --   Gb  - Linker created -
 .iar.init_table$$Base   0x00002d5c            --   Gb  - Linker created -
 .iar.init_table$$Limit  0x00002d6c            --   Gb  - Linker created -
 ?main                   0x00002e7d           Code  Gb  cmain.o [5]
@@ -397,8 +402,8 @@ CAN1_RW_IRQHandler      0x0000263d      0xa  Code  Gb  HW_CAN.o [1]
 CAN1_TW_IRQHandler      0x00002633      0xa  Code  Gb  HW_CAN.o [1]
 CAN1_WAKE_UP_IRQHandler
                         0x00002665      0x2  Code  Gb  HW_CAN.o [1]
-CSTACK$$Base            0x20003378            --   Gb  - Linker created -
-CSTACK$$Limit           0x20004378            --   Gb  - Linker created -
+CSTACK$$Base            0x20003368            --   Gb  - Linker created -
+CSTACK$$Limit           0x20004368            --   Gb  - Linker created -
 CodeRelocate$$Base      0x00002a64            --   Gb  - Linker created -
 CodeRelocate$$Limit     0x00002ab0            --   Gb  - Linker created -
 CodeRelocateRam$$Base   0x1fff0410            --   Gb  - Linker created -
@@ -463,7 +468,7 @@ LPLD_UART_PutChar       0x0000083b      0xa  Code  Gb  HW_UART.o [1]
 LPTMR_ISR               0x1fff0688      0x4  Data  Gb  HW_LPTMR.o [1]
 LPT_IRQHandler          0x00002ded     0x16  Code  Gb  HW_LPTMR.o [1]
 NVIC_EncodePriority     0x00001def     0x3e  Code  Lc  ov7620.o [1]
-OS_CPU_SysTickHandler   0x00003091      0xa  Code  Gb  HW_SYSTICK.o [1]
+OS_CPU_SysTickHandler   0x00003095      0xa  Code  Gb  HW_SYSTICK.o [1]
 PDB_IRQHandler          0x000028a9     0x6a  Code  Gb  HW_PDB.o [1]
 PDB_ISR                 0x1fff068c      0x4  Data  Gb  HW_PDB.o [1]
 PDB_SE_ISR              0x1fff0690      0x4  Data  Gb  HW_PDB.o [1]
@@ -509,7 +514,7 @@ UART5_IRQHandler        0x000009fd     0x58  Code  Gb  HW_UART.o [1]
 UART_R_ISR              0x1fff0704     0x18  Data  Gb  HW_UART.o [1]
 UART_T_ISR              0x1fff071c     0x18  Data  Gb  HW_UART.o [1]
 USB_ISR                 0x1fff0734      0x4  Data  Gb  HW_USB.o [1]
-USB_OTG_IRQHandler      0x000030a1      0xa  Code  Gb  HW_USB.o [1]
+USB_OTG_IRQHandler      0x000030a5      0xa  Code  Gb  HW_USB.o [1]
 __BOOT_STACK_ADDRESS {Abs}
                         0x2000fff8           Data  Gb  command line/config [2]
 __NVIC_DisableIRQ       0x00001db3     0x1a  Code  Lc  ov7620.o [1]
@@ -525,11 +530,11 @@ __aeabi_memclr4         0x000020b1           Code  Gb  ABImemclr4.o [5]
 __aeabi_memcpy4         0x00001399           Code  Gb  ABImemcpy.o [5]
 __aeabi_memcpy8         0x00001399           Code  Gb  ABImemcpy.o [5]
 __cmain                 0x00002e7d           Code  Gb  cmain.o [5]
-__exit                  0x00002ebd     0x14  Code  Gb  exit.o [6]
+__exit                  0x00002ec1     0x14  Code  Gb  exit.o [6]
 __iar_Memset4_word      0x00002241           Code  Gb  ABImemset48.o [5]
 __iar_Memset8_word      0x00002241           Code  Gb  ABImemset48.o [5]
 __iar_data_init3        0x00002cc9     0x28  Code  Gb  data_init.o [5]
-__iar_program_start     0x000030c9           Code  Gb  cstartup_M.o [5]
+__iar_program_start     0x000030cd           Code  Gb  cstartup_M.o [5]
 __iar_systems$$module {Abs}
                         0x00000001           Data  Gb  command line/config [2]
 __iar_zero_init3        0x00002b81     0x40  Code  Gb  zero_init3.o [5]
@@ -537,19 +542,17 @@ __low_level_init        0x00002e97      0x4  Code  Gb  low_level_init.o [3]
 __vector_table          0x00000000           Data  Gb  startup_K60DZ10.o [1]
 __vector_table_0x1c     0x0000001c           Data  Gb  startup_K60DZ10.o [1]
 _call_main              0x00002e89           Code  Gb  cmain.o [5]
-_exit                   0x00002eb1           Code  Gb  cexit.o [5]
+_exit                   0x00002eb5           Code  Gb  cexit.o [5]
 _main                   0x00002e93           Code  Gb  cmain.o [5]
-acq_flag                0x20003374      0x1  Data  Lc  ov7620.o [1]
-allow_acq_once          0x20003375      0x1  Data  Lc  ov7620.o [1]
-app__camera_test        0x00002ea7      0x8  Code  Gb  camera_test.o [1]
+acq_flag                0x20003364      0x1  Data  Lc  ov7620.o [1]
+allow_acq_once          0x20003365      0x1  Data  Lc  ov7620.o [1]
+app__camera_test        0x00002eab      0x8  Code  Gb  camera_test.o [1]
+app__oled_dev           0x00002eb3      0x2  Code  Gb  oled_test.o [1]
 assert_failed           0x00001d85     0x14  Code  Gb  assert.o [1]
-camera__take_a_photo_please_
-                        0x00001ee1     0x36  Code  Gb  ov7620.o [1]
 camera_error            0x1fff0738      0x4  Data  Lc  ov7620.o [1]
 common_relocate         0x00001159     0xa0  Code  Gb  relocate.o [1]
 cpu_identify            0x00000cd1    0x1fa  Code  Lc  system_MK60.o [1]
-dma_init                0x20003348     0x2c  Data  Lc  ov7620.o [1]
-exit                    0x00002ea3      0x4  Code  Gb  exit.o [3]
+exit                    0x00002ea7      0x4  Code  Gb  exit.o [3]
 flash_identify          0x00000ecb     0xa6  Code  Lc  system_MK60.o [1]
 flexcan_msgobj_param_t  0x1fff0478    0x100  Data  Gb  HW_CAN.o [1]
 g_bus_clock             0x1fff0460      0x4  Data  Gb  HW_MCG.o [1]
@@ -557,20 +560,22 @@ g_core_clock            0x1fff045c      0x4  Data  Gb  HW_MCG.o [1]
 g_flash_clock           0x1fff0464      0x4  Data  Gb  HW_MCG.o [1]
 g_flexbus_clock         0x1fff0468      0x4  Data  Gb  HW_MCG.o [1]
 href_cnt                0x1fff0740      0x4  Data  Lc  ov7620.o [1]
-main                    0x00002e9b      0x8  Code  Gb  program.o [1]
-out_char                0x00003039      0xe  Code  Gb  io.o [1]
-ov7620__config          0x00001f17    0x140  Code  Gb  ov7620.o [1]
+main                    0x00002e9b      0xc  Code  Gb  program.o [1]
+out_char                0x0000303d      0xe  Code  Gb  io.o [1]
+ov7620__config          0x00001f0d    0x144  Code  Gb  ov7620.o [1]
 printf                  0x000018d7     0x1e  Code  Gb  printf.o [1]
 printk                  0x000014fd    0x3da  Code  Gb  printf.o [1]
 printk_mknumstr         0x0000144d     0x74  Code  Lc  printf.o [1]
 printk_pad_space        0x000014df     0x1e  Code  Lc  printf.o [1]
 printk_pad_zero         0x000014c1     0x1e  Code  Lc  printf.o [1]
 printk_putc             0x00001421     0x2c  Code  Lc  printf.o [1]
-row_finish              0x00001ebb     0x26  Code  Lc  ov7620.o [1]
+row_finish              0x00001eeb     0x22  Code  Lc  ov7620.o [1]
 rowacq_cnt              0x1fff0744      0x4  Data  Lc  ov7620.o [1]
 strlen                  0x000018f9     0x1c  Code  Gb  stdlib.o [1]
+uart0_init_struct       0x20003348     0x1c  Data  Gb  ov7620.o [1]
+uart_init               0x00001e2d     0x30  Code  Gb  ov7620.o [1]
 vsync_cnt               0x1fff073c      0x4  Data  Lc  ov7620.o [1]
-vsync_href_isr          0x00001e2d     0x8e  Code  Lc  ov7620.o [1]
+vsync_href_isr          0x00001e5d     0x8e  Code  Lc  ov7620.o [1]
 
 
 [1] = F:\K60_CAR_2018\project\programme\iar\RAM\Obj
@@ -580,10 +585,10 @@ vsync_href_isr          0x00001e2d     0x8e  Code  Lc  ov7620.o [1]
 [5] = rt7M_tl.a
 [6] = shb_l.a
 
-  11 184 bytes of readonly  code memory
+  11 188 bytes of readonly  code memory
       76 bytes of readwrite code memory
    1 452 bytes of readonly  data memory
-  81 690 bytes of readwrite data memory
+  81 674 bytes of readwrite data memory
 
 Errors: none
 Warnings: none

@@ -6,7 +6,7 @@
 
 void ov7620__config();
 void camera__take_a_photo_please_();
-extern uint8 Pix_Data[240][320];
+extern uint8 Pix_Data[240*320];
 
 
 #endif

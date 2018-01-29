@@ -42,34 +42,13 @@ LPTMR_InitTypeDef lptmr_init_param;
 void main (void)
 {    
 
-  //app__motor_dev();
-  //app__steer_dev();
+//  app__motor_dev();
+//  app__steer_dev();
 // app__blind();
 app__camera_test();
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-  
-  
+//app__oled_dev();
 
-  
   while(1){
     
   }

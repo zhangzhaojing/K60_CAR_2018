@@ -1,13 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      27/Jan/2018  16:43:41
+// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      29/Jan/2018  14:33:09
 // Copyright 1999-2017 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
 //    Endian       =  little
 //    Source file  =  F:\K60_CAR_2018\project\programme\app\program.c
 //    Command line =  
-//        -f C:\Users\19071_~1\AppData\Local\Temp\EW4630.tmp
+//        -f C:\Users\19071_~1\AppData\Local\Temp\EW7B48.tmp
 //        (F:\K60_CAR_2018\project\programme\app\program.c -D LPLD_K60 -D
 //        USE_K60DZ10 -lCN F:\K60_CAR_2018\project\programme\iar\RAM\List -lB
 //        F:\K60_CAR_2018\project\programme\iar\RAM\List -o
@@ -42,6 +42,7 @@
         #define SHT_PROGBITS 0x1
 
         EXTERN app__camera_test
+        EXTERN app__oled_dev
 
         PUBLIC lptmr_init_param
         PUBLIC main
@@ -101,41 +102,21 @@ lptmr_init_param:
 main:
         PUSH     {R7,LR}
 //   44 
-//   45   //app__motor_dev();
-//   46   //app__steer_dev();
+//   45 //  app__motor_dev();
+//   46 //  app__steer_dev();
 //   47 // app__blind();
 //   48 app__camera_test();
         BL       app__camera_test
 //   49  
-//   50  
-//   51  
-//   52  
-//   53  
-//   54  
-//   55  
-//   56  
-//   57  
-//   58  
-//   59  
-//   60  
-//   61  
-//   62  
-//   63  
-//   64  
-//   65  
-//   66  
-//   67  
-//   68  
-//   69   
-//   70   
-//   71 
-//   72   
-//   73   while(1){
+//   50 app__oled_dev();
+        BL       app__oled_dev
+//   51 
+//   52   while(1){
 ??main_0:
         B.N      ??main_0
-//   74     
-//   75   }
-//   76 }
+//   53     
+//   54   }
+//   55 }
 
         SECTION `.iar_vfe_header`:DATA:NOALLOC:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
@@ -145,10 +126,10 @@ main:
         END
 // 
 // 12 bytes in section .bss
-//  8 bytes in section .text
+// 12 bytes in section .text
 // 
-//  8 bytes of CODE memory
+// 12 bytes of CODE memory
 // 12 bytes of DATA memory
 //
 //Errors: none
-//Warnings: 1
+//Warnings: 2

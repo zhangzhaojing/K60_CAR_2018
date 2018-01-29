@@ -1,13 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      27/Jan/2018  17:00:31
+// IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM      29/Jan/2018  14:27:48
 // Copyright 1999-2017 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
 //    Endian       =  little
 //    Source file  =  F:\K60_CAR_2018\lib\peripheral\ov7620.c
 //    Command line =  
-//        -f C:\Users\19071_~1\AppData\Local\Temp\EWB1ED.tmp
+//        -f C:\Users\19071_~1\AppData\Local\Temp\EW9368.tmp
 //        (F:\K60_CAR_2018\lib\peripheral\ov7620.c -D LPLD_K60 -D USE_K60DZ10
 //        -lCN F:\K60_CAR_2018\project\programme\iar\RAM\List -lB
 //        F:\K60_CAR_2018\project\programme\iar\RAM\List -o
@@ -153,36 +153,30 @@ NVIC_EncodePriority:
 //    5 #define L_MAX 320//lieshu
 //    6 
 //    7 void camera__take_a_photo_please_();
-
-        SECTION `.bss`:DATA:REORDER:NOROOT(2)
-        DATA
-//    8 UART_InitTypeDef uart0_init_struct;
-uart0_init_struct:
-        DS8 28
-//    9 
+//    8 
 
         SECTION `.bss`:DATA:REORDER:NOROOT(0)
         DATA
-//   10 static boolean acq_flag;
+//    9 static boolean acq_flag;
 acq_flag:
         DS8 1
 
         SECTION `.bss`:DATA:REORDER:NOROOT(0)
         DATA
-//   11 static boolean allow_acq_once;
+//   10 static boolean allow_acq_once;
 allow_acq_once:
         DS8 1
 
         SECTION `.bss`:DATA:REORDER:NOROOT(2)
         DATA
-//   12 static int camera_error;//0:OK 1:ROW_MISS 2:COL_MISS
+//   11 static int camera_error;//0:OK 1:ROW_MISS 2:COL_MISS
 camera_error:
         DS8 4
-//   13 
+//   12 
 
         SECTION `.bss`:DATA:REORDER:NOROOT(2)
         DATA
-//   14 static uint32 vsync_cnt,href_cnt, rowacq_cnt;
+//   13 static uint32 vsync_cnt,href_cnt, rowacq_cnt;
 vsync_cnt:
         DS8 4
 
@@ -198,19 +192,25 @@ rowacq_cnt:
 
         SECTION `.bss`:DATA:REORDER:NOROOT(2)
         DATA
-//   15 uint8 Pix_Data[H_MAX][L_MAX];
+//   14 uint8 Pix_Data[H_MAX*L_MAX];
 Pix_Data:
         DS8 76800
-//   16 
-//   17 static GPIO_InitTypeDef gpio_init_vh;
+//   15 
+//   16 static GPIO_InitTypeDef gpio_init_vh;
 
         SECTION `.bss`:DATA:REORDER:NOROOT(2)
         DATA
-//   18 static DMA_InitTypeDef  dma_init;
+//   17 static DMA_InitTypeDef  dma_init;
 dma_init:
         DS8 44
-//   19 
-//   20 
+//   18 
+//   19 /*串口初始化*/
+
+        SECTION `.bss`:DATA:REORDER:NOROOT(2)
+        DATA
+//   20 UART_InitTypeDef uart0_init_struct;
+uart0_init_struct:
+        DS8 28
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
@@ -218,24 +218,23 @@ dma_init:
 //   22 {
 uart_init:
         PUSH     {R5-R7,LR}
-//   23   uart0_init_struct.UART_Uartx = UART0; //使用UART0
+//   23   uart0_init_struct.UART_Uartx = UART0;
         LDR.N    R0,??DataTable7_4  ;; 0x4006a000
         LDR.N    R1,??DataTable7_5
         STR      R0,[R1, #+0]
-//   24   uart0_init_struct.UART_BaudRate = 9600; //设置波特率9600
+//   24   uart0_init_struct.UART_BaudRate = 9600;
         MOV      R0,#+9600
         LDR.N    R1,??DataTable7_5
         STR      R0,[R1, #+4]
-//   25   uart0_init_struct.UART_RxPin = PTA15;  //接收引脚为PTE15
+//   25   uart0_init_struct.UART_RxPin = PTA15;
         MOVS     R0,#+15
         LDR.N    R1,??DataTable7_5
         STRB     R0,[R1, #+9]
-//   26   uart0_init_struct.UART_TxPin = PTA14;  //发送引脚为PTE14
+//   26   uart0_init_struct.UART_TxPin = PTA14;
         MOVS     R0,#+14
         LDR.N    R1,??DataTable7_5
         STRB     R0,[R1, #+8]
-//   27   //初始化UART
-//   28   LPLD_UART_Init(uart0_init_struct);
+//   27   LPLD_UART_Init(uart0_init_struct);
         LDR.N    R1,??DataTable7_5
         SUB      SP,SP,#+16
         MOV      R0,SP
@@ -243,10 +242,11 @@ uart_init:
         BL       __aeabi_memcpy4
         POP      {R0-R3}
         BL       LPLD_UART_Init
-//   29 }
+//   28 }
         POP      {R0-R2,PC}       ;; return
-//   30 ///////////////////////////////////////////////////////////////////////////////
-//   31 //////////////////////////////////////////////////////////////////////////////
+//   29 
+//   30 
+//   31 /*中断函数*/
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
@@ -287,7 +287,7 @@ vsync_href_isr:
         MOVS     R0,#+0
         LDR.N    R1,??DataTable7_12
         STR      R0,[R1, #+0]
-//   43     rowacq_cnt=0;//采集的行数
+//   43     rowacq_cnt=0;//DMA采集的行数
         MOVS     R0,#+0
         LDR.N    R1,??DataTable7_13
         STR      R0,[R1, #+0]
@@ -302,7 +302,7 @@ vsync_href_isr:
         LDRB     R0,[R0, #+0]
         CMP      R0,#+0
         BEQ.N    ??vsync_href_isr_2
-//   46           acq_flag=FALSE;
+//   46           acq_flag=0;
         MOVS     R0,#+0
         LDR.N    R1,??DataTable7_14
         STRB     R0,[R1, #+0]
@@ -310,8 +310,8 @@ vsync_href_isr:
         MOVS     R0,#+1
         LDR.N    R1,??DataTable7_10
         STR      R0,[R1, #+0]
-//   48           allow_acq_once=TRUE;
-        MOVS     R0,#+1
+//   48           allow_acq_once=FALSE;//TURE继续采集  FALSE 停止采集
+        MOVS     R0,#+0
         LDR.N    R1,??DataTable7_7
         STRB     R0,[R1, #+0]
 //   49           LPLD_GPIO_ClearIntFlag(PORTD);
@@ -350,48 +350,47 @@ vsync_href_isr:
         LDR.N    R1,??DataTable7_12
         STR      R0,[R1, #+0]
 //   60     }
-//   61     
-//   62     return;
+//   61     return;
 ??vsync_href_isr_5:
         B.N      ??vsync_href_isr_3
-//   63   }
-//   64 }
+//   62   }
+//   63 }
 ??vsync_href_isr_4:
 ??vsync_href_isr_3:
         BX       LR               ;; return
+//   64 
 //   65 
-//   66 
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//   67 static void row_finish(){     //DMA中断函数
+//   66 static void row_finish(){     //DMA中断函数
 row_finish:
         PUSH     {R7,LR}
-//   68   
-//   69   rowacq_cnt++;//已采集行数自加
+//   67   
+//   68   rowacq_cnt++;//已采集行数自加
         LDR.N    R0,??DataTable7_13
         LDR      R0,[R0, #+0]
         ADDS     R0,R0,#+1
         LDR.N    R1,??DataTable7_13
         STR      R0,[R1, #+0]
-//   70   
-//   71   if(rowacq_cnt==H_MAX){//行数采集完FLAG=0（关闭行中断）
+//   69   
+//   70   if(rowacq_cnt==H_MAX){//行数采集完FLAG=0（关闭行中断）
         LDR.N    R0,??DataTable7_13
         LDR      R0,[R0, #+0]
         CMP      R0,#+240
         BNE.N    ??row_finish_0
-//   72      acq_flag = FALSE;
+//   71      acq_flag = FALSE;
         MOVS     R0,#+0
         LDR.N    R1,??DataTable7_14
         STRB     R0,[R1, #+0]
-//   73      disable_irq(PORTD_IRQn);
+//   72      disable_irq(PORTD_IRQn);
         MOVS     R0,#+90
         BL       __NVIC_DisableIRQ
-//   74      
-//   75      /*imag proc*/
-//   76      //LPLD_UART_PutCharArr(UART0, Pix_Data, H_MAX*L_MAX);//send picture
-//   77      camera__take_a_photo_please_();
-        BL       camera__take_a_photo_please_
+//   73      
+//   74      /*imag proc*/
+//   75      //LPLD_UART_PutCharArr(UART0, Pix_Data,320*240);//发送Pix_Data
+//   76      //camera__take_a_photo_please_();//继续采集
+//   77     
 //   78   }
 //   79 }
 ??row_finish_0:
@@ -409,7 +408,7 @@ camera__take_a_photo_please_:
         LDRB     R0,[R0, #+0]
         CMP      R0,#+1
         BEQ.N    ??camera__take_a_photo_please__0
-//   83     allow_acq_once=1;
+//   83     allow_acq_once=TRUE;
 ??camera__take_a_photo_please__1:
         MOVS     R0,#+1
         LDR.N    R1,??DataTable7_7
@@ -596,8 +595,10 @@ ov7620__config:
         LDR.N    R1,??DataTable7_7
         STRB     R0,[R1, #+0]
 //  140     
-//  141     //////////////////
-//  142     NVIC_SetPriority((IRQn_Type)(DMA_CH0),NVIC_EncodePriority(NVIC_PriorityGroup_4,9,0));
+//  141     uart_init();
+        BL       uart_init
+//  142     //////////////////
+//  143     NVIC_SetPriority((IRQn_Type)(DMA_CH0),NVIC_EncodePriority(NVIC_PriorityGroup_4,9,0));
         MOVS     R2,#+0
         MOVS     R1,#+9
         MOVS     R0,#+3
@@ -605,7 +606,7 @@ ov7620__config:
         MOVS     R1,R0
         MOVS     R0,#+0
         BL       __NVIC_SetPriority
-//  143     NVIC_SetPriority(PORTD_IRQn,NVIC_EncodePriority(NVIC_PriorityGroup_4,8,0));
+//  144     NVIC_SetPriority(PORTD_IRQn,NVIC_EncodePriority(NVIC_PriorityGroup_4,8,0));
         MOVS     R2,#+0
         MOVS     R1,#+8
         MOVS     R0,#+3
@@ -613,14 +614,14 @@ ov7620__config:
         MOVS     R1,R0
         MOVS     R0,#+90
         BL       __NVIC_SetPriority
-//  144     LPLD_GPIO_ClearIntFlag(PORTD);
+//  145     LPLD_GPIO_ClearIntFlag(PORTD);
         MOVS     R0,#-1
         LDR.N    R1,??DataTable7_6  ;; 0x4004c0a0
         STR      R0,[R1, #+0]
-//  145     enable_irq(PORTD_IRQn);
+//  146     enable_irq(PORTD_IRQn);
         MOVS     R0,#+90
         BL       __NVIC_EnableIRQ
-//  146 }
+//  147 }
         ADD      SP,SP,#+92
         POP      {PC}             ;; return
 
@@ -790,7 +791,6 @@ ov7620__config:
         DC32 0
 
         END
-//  147 
 //  148 
 //  149 
 //  150 
@@ -811,6 +811,7 @@ ov7620__config:
 //  165 
 //  166 
 //  167 
+//  168 
 // 
 // 76 890 bytes in section .bss
 //     84 bytes in section .rodata
